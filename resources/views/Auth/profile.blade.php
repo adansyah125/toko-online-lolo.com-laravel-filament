@@ -1,142 +1,95 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="max-w-[900px] mx-auto px-6 py-12">
+    <section class="container py-5" style="max-width: 900px;">
 
-
-        <!-- CARD -->
-        <div class="bg-white rounded-xl shadow-lg p-8">
+        <div class="bg-white rounded shadow-lg p-4 p-md-5" data-aos="fade-up">
 
             <!-- FOTO + NAMA -->
-            <div class="flex flex-col md:flex-row items-center gap-6">
-                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=ff6f00&color=fff"
-                    class="w-28 h-28 rounded-full shadow">
+            <div class="d-flex flex-column flex-md-row align-items-center gap-4" data-aos="fade-right">
+                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=000&color=fff"
+                    class="rounded-circle shadow" style="width: 110px; height: 110px; object-fit: cover;">
 
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-800">{{ Auth::user()->name }}</h2>
-                    <p class="text-gray-600">{{ Auth::user()->email }}</p>
+                <div data-aos="fade-left" data-aos-delay="200">
+                    <h2 class="fw-bold text-dark">{{ Auth::user()->name }}</h2>
+                    <p class="text-secondary">{{ Auth::user()->email }}</p>
                 </div>
             </div>
 
-            <hr class="my-8">
+            <hr class="my-4" data-aos="zoom-in">
 
             <!-- FORM PROFIL -->
-            <form id="profileForm" action="" method="POST" class="space-y-6">
+            <form id="profileForm" action="{{ route('user.profile.update') }}" method="POST" data-aos="fade-up"
+                data-aos-delay="150">
                 @csrf
                 @method('PUT')
 
                 <!-- NAMA -->
-                <div>
-                    <label class="font-semibold mb-1 block">Nama Lengkap</label>
+                <div class="mb-3" data-aos="fade-up" data-aos-delay="200">
+                    <label class="form-label fw-semibold">Nama Lengkap</label>
                     <input type="text" id="name" name="name" value="{{ Auth::user()->name }}"
-                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#ff6f00]">
-                    <p id="nameError" class="text-red-600 text-sm mt-1 hidden"></p>
+                        class="form-control">
+                    <small id="nameError" class="text-danger d-none"></small>
                 </div>
 
                 <!-- EMAIL -->
-                <div>
-                    <label class="font-semibold mb-1 block">Email</label>
+                <div class="mb-3" data-aos="fade-up" data-aos-delay="250">
+                    <label class="form-label fw-semibold">Email</label>
                     <input type="email" id="email" name="email" value="{{ Auth::user()->email }}"
-                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#ff6f00]">
-                    <p id="emailError" class="text-red-600 text-sm mt-1 hidden"></p>
+                        class="form-control">
+                    <small id="emailError" class="text-danger d-none"></small>
                 </div>
 
                 <!-- ALAMAT -->
-                <div>
-                    <label class="font-semibold mb-1 block">Alamat</label>
-                    <textarea id="alamat" name="alamat" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#ff6f00]">{{ Auth::user()->alamat ?? '' }}</textarea>
-                    <p id="alamatError" class="text-red-600 text-sm mt-1 hidden"></p>
+                <div class="mb-3" data-aos="fade-up" data-aos-delay="300">
+                    <label class="form-label fw-semibold">Alamat</label>
+                    <textarea id="alamat" name="alamat" rows="3" class="form-control">{{ Auth::user()->alamat ?? '' }}</textarea>
+                    <small id="alamatError" class="text-danger d-none"></small>
                 </div>
 
-                <!-- NOMOR TELEPON -->
-                <div>
-                    <label class="font-semibold mb-1 block">No. Telepon</label>
+                <!-- NO TELEPON -->
+                <div class="mb-3" data-aos="fade-up" data-aos-delay="350">
+                    <label class="form-label fw-semibold">No. Telepon</label>
                     <input type="text" id="no_telp" name="no_telp" value="{{ Auth::user()->no_telp ?? '' }}"
-                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#ff6f00]">
-                    <p id="telpError" class="text-red-600 text-sm mt-1 hidden"></p>
+                        class="form-control">
+                    <small id="telpError" class="text-danger d-none"></small>
                 </div>
 
                 <!-- PASSWORD -->
-                <div>
-                    <label class="font-semibold mb-1 block">Password Baru (Opsional)</label>
-                    <input type="password" id="password" name="password"
-                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#ff6f00]">
-                    <p id="passwordError" class="text-red-600 text-sm mt-1 hidden"></p>
+                <div class="mb-4" data-aos="fade-up" data-aos-delay="400">
+                    <label class="form-label fw-semibold">Password Baru (Opsional)</label>
+                    <input type="password" id="password" name="password" class="form-control">
+                    <small id="passwordError" class="text-danger d-none"></small>
                 </div>
 
-                <button
-                    class="px-6 py-3 bg-[#ff6f00] text-white rounded-lg shadow hover:bg-[#e65c00] transition font-semibold">
+                <button class="btn btn-warning text-white fw-semibold px-4 py-2" data-aos="zoom-in" data-aos-delay="450">
                     Simpan Perubahan
                 </button>
+
             </form>
 
         </div>
 
     </section>
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 1800
+            });
+        </script>
+    @endif
 
-    {{-- VALIDASI REALTIME --}}
-    <script>
-        const nameInput = document.getElementById("name");
-        const emailInput = document.getElementById("email");
-        const alamatInput = document.getElementById("alamat");
-        const telpInput = document.getElementById("no_telp");
-        const passwordInput = document.getElementById("password");
-
-        const nameError = document.getElementById("nameError");
-        const emailError = document.getElementById("emailError");
-        const alamatError = document.getElementById("alamatError");
-        const telpError = document.getElementById("telpError");
-        const passError = document.getElementById("passwordError");
-
-        // VALIDASI NAMA
-        nameInput.addEventListener("input", () => {
-            if (nameInput.value.trim().length < 3) {
-                nameError.textContent = "Nama minimal 3 karakter.";
-                nameError.classList.remove("hidden");
-            } else {
-                nameError.classList.add("hidden");
-            }
-        });
-
-        // VALIDASI EMAIL
-        emailInput.addEventListener("input", () => {
-            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!regex.test(emailInput.value)) {
-                emailError.textContent = "Format email tidak valid.";
-                emailError.classList.remove("hidden");
-            } else {
-                emailError.classList.add("hidden");
-            }
-        });
-
-        // VALIDASI ALAMAT
-        alamatInput.addEventListener("input", () => {
-            if (alamatInput.value.trim().length < 5) {
-                alamatError.textContent = "Alamat terlalu pendek.";
-                alamatError.classList.remove("hidden");
-            } else {
-                alamatError.classList.add("hidden");
-            }
-        });
-
-        // VALIDASI NO TELP
-        telpInput.addEventListener("input", () => {
-            if (!/^[0-9]+$/.test(telpInput.value)) {
-                telpError.textContent = "Nomor telepon hanya boleh angka.";
-                telpError.classList.remove("hidden");
-            } else {
-                telpError.classList.add("hidden");
-            }
-        });
-
-        // VALIDASI PASSWORD
-        passwordInput.addEventListener("input", () => {
-            if (passwordInput.value && passwordInput.value.length < 6) {
-                passError.textContent = "Password minimal 6 karakter.";
-                passError.classList.remove("hidden");
-            } else {
-                passError.classList.add("hidden");
-            }
-        });
-    </script>
+    @if ($errors->any())
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                html: '{!! implode('<br>', $errors->all()) !!}',
+            });
+        </script>
+    @endif
 @endsection

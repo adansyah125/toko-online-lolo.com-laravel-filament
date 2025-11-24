@@ -22,6 +22,7 @@ class InformasiResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationLabel = 'Informasi';
+
     public static function getPluralLabel(): string
     {
         return 'Informasi';

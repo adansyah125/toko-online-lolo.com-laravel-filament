@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Validator;
 
@@ -22,22 +26,29 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // Validasi request
+
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        // Tambahkan filter role user
+
         $credentials['role'] = 'user';
 
-        // Attempt login
+
         if (Auth::attempt($credentials, $request->remember)) {
-            $request->session()->regenerate(); // Proteksi session hijacking
+            $request->session()->regenerate();
+
+
+            Activity::create([
+                'user_id' => Auth::id(),
+                'activity' => 'login',
+                'deskripsi' => 'User ' . Auth::user()->name . ' berhasil login',
+                'created_at' => Carbon::now('Asia/Jakarta'),
+            ]);
             return redirect()->route('dashboard')->with('toast_success', 'Selamat Datang! ' . Auth::user()->name);
         }
 
-        // Jika gagal
         return back()->with('toast_error', 'Email atau password salah!')->withInput();
     }
 
@@ -49,14 +60,13 @@ class AuthController extends Controller
             'password' => 'required|min:6',
         ]);
 
-        User::create([
+        $user = User::create([
             'name'     => $request->name,
             'email'    => $request->email,
             'role'     => 'user',
             'password' => bcrypt($request->password),
         ]);
 
-        // Auth::login($user);
         return redirect()->route('login')->with('toast_success', 'Berhasil Daftar!');
     }
 
@@ -82,10 +92,8 @@ class AuthController extends Controller
     {
         $googleUser = Socialite::driver('google')->stateless()->user();
 
-        // Cek user sudah ada?
         $user = User::where('email', $googleUser->email)->first();
 
-        // Jika belum, buat user baru otomatis
         if (!$user) {
             $user = User::create([
                 'name'  => $googleUser->name,
@@ -146,5 +154,34 @@ class AuthController extends Controller
         }
 
         return response()->json(['success' => true]);
+    }
+
+    public function profileUpdate(Request $request)
+    {
+        $user = Auth::user();
+
+
+        $request->validate([
+            'name'     => 'required|min:3',
+            'email'    => 'required|email|unique:users,email,' . $user->id,
+            'alamat'   => 'nullable|min:5',
+            'no_telp'  => 'nullable|numeric',
+            'password' => 'nullable|min:6',
+        ]);
+
+
+        $user->name    = $request->name;
+        $user->email   = $request->email;
+        $user->alamat  = $request->alamat;
+        $user->no_telp = $request->no_telp;
+
+
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return back()->with('success', 'Profil berhasil diperbarui!');
     }
 }

@@ -13,14 +13,16 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->string('order_id');
             $table->string('nama_produk');
             $table->integer('qty');
             $table->decimal('total_harga', 10, 2);
             $table->string('nama_penerima');
             $table->char('no_telp', 13);
             $table->string('alamat');
-            $table->enum('ekspedisi', ['JNE', 'J%T', 'Sicepat', 'AnterAja'])->default('JNE');
+            $table->enum('ekspedisi', ['JNE', 'JNT', 'Sicepat', 'AnterAja'])->default('JNE');
             $table->enum('status', ['pending', 'paid', 'failed'])->default('pending');
             $table->timestamps();
         });

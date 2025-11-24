@@ -1,82 +1,182 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="pb-12">
-        <div class="max-w-4xl mx-auto mt-8 p-6  bg-white shadow-lg rounded-lg">
+    <section class="pb-5">
+        <div class="container mt-5">
 
-            {{-- HEADER --}}
-            <div class="mb-4">
-                <h1 class="text-2xl font-bold text-gray-800">Detail Pesanan</h1>
-                <p class="text-gray-500 text-sm">Kode Pesanan: <span class="font-semibold text-gray-700">ORD-77401</span></p>
-            </div>
+            <div class="mx-auto p-4 p-md-5 bg-white shadow rounded-4" style="max-width: 1200px;">
 
-            <div class="border rounded-lg overflow-hidden">
-
-                {{-- STATUS PESANAN --}}
-                <div class="p-4 bg-gray-50 border-b">
-                    <span class="px-3 py-1 bg-green-200 text-green-800 font-semibold text-xs rounded-full">
-                        Sudah Dibayar
-                    </span>
+                {{-- HEADER --}}
+                <div class="mb-4">
+                    <h1 class="fw-bold text-dark fs-3">Detail Pesanan</h1>
+                    <p class="text-secondary small">
+                        Kode Pesanan:
+                        <span class="fw-semibold text-dark">{{ $order->order_id }}</span>
+                    </p>
                 </div>
 
-                {{-- DETAIL PRODUK --}}
-                <div class="p-4 border-b">
-                    <h2 class="font-semibold text-gray-700 mb-3">Produk</h2>
+                <div class="border rounded-4 overflow-hidden">
 
-                    <div class="flex items-center space-x-4">
-                        <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80"
-                            class="w-20 h-20 rounded-lg object-cover">
+                    {{-- STATUS PESANAN --}}
+                    <div class="p-3 bg-light border-bottom">
+                        @if ($order->status == 'pending')
+                            <span class="badge bg-danger px-3 py-2">Menunggu Pembayaran</span>
+                        @elseif ($order->status == 'paid')
+                            <span class="badge bg-success px-3 py-2">Pembayaran Diterima</span>
+                        @endif
+                    </div>
 
-                        <div>
-                            <p class="font-semibold text-gray-800">Produk Fashion</p>
-                            <p class="text-sm text-gray-500">Jumlah: 2</p>
-                            <p class="text-sm text-[#ff6f00] font-semibold mt-1">Rp 350.000</p>
+                    {{-- DETAIL PRODUK --}}
+                    <div class="p-4 border-bottom bg-white">
+                        <h5 class="fw-semibold text-secondary mb-3">Produk</h5>
+
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="{{ asset('storage/' . $order->product->image1) }}" class="rounded-3 shadow-sm"
+                                style="width: 80px; height: 80px; object-fit: cover;">
+                            {{-- <td>{{ dd($order->product) }}</td> --}}
+
+                            <div>
+                                <p class="fw-semibold text-dark mb-1">{{ $order->nama_produk }}</p>
+                                <p class="text-muted small mb-1">Jumlah: {{ $order->qty }}</p>
+                                <p class="text-black fw-bold small mb-0">Rp {{ number_format($order->total_harga, 2) }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {{-- INFORMASI PENGIRIMAN --}}
-                <div class="p-4 border-b">
-                    <h2 class="font-semibold text-gray-700 mb-2">Informasi Pengiriman</h2>
+                    {{-- INFORMASI PENGIRIMAN --}}
+                    <div class="p-4 border-bottom bg-light">
+                        <h5 class="fw-semibold text-secondary mb-3">Informasi Pengiriman</h5>
 
-                    <p class="text-sm text-gray-600"><strong>Nama:</strong> Syahdan Mutahariq</p>
-                    <p class="text-sm text-gray-600"><strong>Alamat:</strong> Jl. Cicukang RT 2 RW 28, Kab Bandung Kec
-                        Margaasih Desa Mekarrahayu 40218 Dekat Lapang Lebak</p>
-                    <p class="text-sm text-gray-600"><strong>Kurir:</strong> JNE Reguler</p>
-                    <p class="text-sm text-gray-600"><strong>No. Resi:</strong> 12345ABC678</p>
-                </div>
+                        <p class="small text-dark"><strong>Nama:</strong> {{ $order->nama_penerima }}</p>
+                        <p class="small text-dark"><strong>Alamat:</strong>
+                            {{ $order->alamat }}
+                        </p>
+                        <p class="small text-dark"><strong>Kurir:</strong> {{ $order->ekspedisi }}</p>
+                        <p class="small text-dark"><strong>Status:</strong> {{ $order->status }}</p>
+                    </div>
 
-                {{-- RINGKASAN PEMBAYARAN --}}
-                <div class="p-4 border-b">
-                    <h2 class="font-semibold text-gray-700 mb-3">Ringkasan Pembayaran</h2>
+                    {{-- RINGKASAN PEMBAYARAN --}}
+                    <div class="p-4 border-bottom bg-white">
+                        <h5 class="fw-semibold text-secondary mb-3">Ringkasan Pembayaran</h5>
 
-                    <div class="space-y-2 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Subtotal</span>
-                            <span class="font-semibold text-gray-800">Rp 700.000</span>
+                        <div class="d-flex justify-content-between small mb-2">
+                            <span class="text-muted">Subtotal</span>
+                            <span class="fw-semibold text-dark">Rp {{ number_format($order->total_harga, 2) }}</span>
                         </div>
 
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Ongkos Kirim</span>
-                            <span class="font-semibold text-gray-800">Rp 20.000</span>
+                        <div class="d-flex justify-content-between small mb-2">
+                            <span class="text-muted">Diskon</span>
+                            <span class="fw-semibold text-dark">-</span>
                         </div>
 
-                        <div class="flex justify-between border-t pt-2 mt-2">
-                            <span class="text-gray-700 font-semibold">Total</span>
-                            <span class="text-[#ff6f00] font-bold">Rp 720.000</span>
+                        <div class="border-top pt-2 mt-2 d-flex justify-content-between small">
+                            <span class="fw-semibold text-dark">Total</span>
+                            <span class="fw-bold text-black fs-6">Rp {{ number_format($order->total_harga, 2) }}</span>
                         </div>
                     </div>
-                </div>
 
-                {{-- FOOTER --}}
-                <div class="p-4 flex justify-end bg-gray-50">
-                    <a href="pesanan"
-                        class="px-4 py-2 bg-gray-800 text-white rounded-lg text-sm hover:bg-gray-900 transition shadow">
-                        Kembali
-                    </a>
-                </div>
+                    {{-- FOOTER --}}
+                    @if ($order->status == 'paid')
+                        <div class="p-3 bg-light text-end">
+                            <a href="{{ route('pesanan') }}" class="btn btn-dark btn-sm px-4 py-2 shadow-sm rounded-3">
+                                kembali
+                            </a>
+                        </div>
+                    @else
+                        <div class="p-3 bg-light text-end">
+                            <button id="pay-button" class="btn btn-dark btn-sm px-4 py-2 shadow-sm rounded-3">
+                                Bayar
+                            </button>
+                        </div>
+                    @endif
 
+
+                </div>
             </div>
+
         </div>
     </section>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}">
+    </script>
+
+
+    <script>
+        document.getElementById('pay-button').onclick = function() {
+            fetch("/payment/{{ $order->order_id }}/bayar", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.snapToken) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal Membuat Transaksi',
+                            text: data.error || 'Token pembayaran tidak ditemukan.',
+                            confirmButtonColor: '#3085d6',
+                        });
+                        return;
+                    }
+
+                    snap.pay(data.snapToken, {
+                        onSuccess: function(result) {
+                            fetch("/payment/{{ $order->order_id }}/lunas", {
+                                method: "POST",
+                                headers: {
+                                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                                }
+                            }).then(() => {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Pembayaran Berhasil!',
+                                    text: 'Pembayaran {{ $order->order_id }} dengan nominal Rp {{ number_format($order->total_harga, 2) }} telah berhasil diproses. Terima kasih.',
+                                    confirmButtonColor: '#3085d6',
+                                }).then(() => {
+                                    window.location.href =
+                                        "{{ route('lihat-pesanan', $order->order_id) }}";
+                                });
+                            });
+                        },
+                        onPending: function(result) {
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Menunggu Pembayaran',
+                                text: 'Silakan selesaikan pembayaranmu untuk melanjutkan.',
+                                confirmButtonColor: '#3085d6',
+                            });
+                        },
+                        onError: function(result) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal Membayar',
+                                text: 'Terjadi kesalahan saat memproses pembayaran anda. Silakan coba lagi.',
+                                confirmButtonColor: '#d33',
+                            });
+                        },
+                        onClose: function() {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Pembayaran Dibatalkan',
+                                text: 'Kamu menutup pembayaran. Silakan coba lagi.',
+                                confirmButtonColor: '#3085d6',
+                            }).then(() => {
+                                window.location.href =
+                                    "{{ route('lihat-pesanan', $order->order_id) }}";
+                            });
+                        }
+                    });
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Terjadi Kesalahan',
+                        text: error.message,
+                        confirmButtonColor: '#d33',
+                    });
+                });
+        };
+    </script>
 @endsection

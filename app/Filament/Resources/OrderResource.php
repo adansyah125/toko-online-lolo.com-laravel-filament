@@ -59,6 +59,10 @@ class OrderResource extends Resource
                 TextColumn::make('ekspedisi')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('payment.order_status')
+                    ->searchable()
+                    ->sortable()
+                    ->label('Status Pesanan'),
                 TextColumn::make('status')
                     ->searchable()
                     ->sortable(),

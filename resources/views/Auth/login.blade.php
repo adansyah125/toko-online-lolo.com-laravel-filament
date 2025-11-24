@@ -7,68 +7,65 @@
     <title>Login</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'glyphicons-halflings', sans-serif;
+        }
+
+        /* Fade-in animation */
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Input focus dark mode */
+        input:focus {
+            outline: none;
+        }
+    </style>
 </head>
 <div id="toast"
     class="hidden fixed top-5 right-5 z-50 px-4 py-3 rounded-lg shadow-lg text-white text-sm transition-all duration-300">
 </div>
 
-<body class="bg-gray-100 sm:px-0 px-4 flex items-center justify-center min-h-screen">
+<body class="bg-gray-900 sm:px-0 px-4 flex items-center justify-center min-h-screen">
 
-    <div class="bg-white p-8  rounded-2xl shadow-xl w-full max-w-md">
-
-        <h2 class="text-2xl font-bold text-center mb-6">Login</h2>
-
-        {{-- Session error --}}
+    <div class="bg-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-md fade-in">
+        <h2 class="text-2xl font-bold text-center text-gray-300 mb-1">PK 1.2</h2>
+        <p class="text-center text-gray-300 mb-6">Silahkan untuk Login terlebih dahulu</p> {{-- Session error --}}
         @if (session('error'))
-            <div class="bg-red-100 text-red-600 p-3 rounded mb-3">
-                {{ session('error') }}
-            </div>
+            <div class="bg-red-600 text-white p-3 rounded mb-3"> {{ session('error') }} </div>
         @endif
+        <form id="loginForm" action="{{ route('user.login.post') }}" method="POST" class="space-y-4"> @csrf <div>
+                <label class="block mb-1 text-sm font-medium text-gray-200">Email</label> <input type="email"
+                    name="email"
+                    class="w-full border border-gray-600 rounded-lg p-2 bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-green-400 transition"
+                    placeholder="Email Account">
 
-        <form id="loginForm" action="{{ route('user.login.post') }}" method="POST" class="space-y-4">
-            @csrf
-
-            <div>
-                <label class="block mb-1 text-sm font-medium">Email</label>
-                <input type="email" name="email"
-                    class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-orange-400">
             </div>
-
-            <div>
-                <label class="block mb-1 text-sm font-medium">Password</label>
-                <input type="password" name="password"
-                    class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-orange-400">
-            </div>
-
-            <button id="submitBtn" type="submit"
-                class="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition disabled:bg-gray-400 disabled:cursor-not-allowed">
-                Login
-            </button>
-
-            <span id="loading" class="hidden text-sm text-gray-600">Sedang memeriksa...</span>
+            <div> <label class="block mb-1 text-sm font-medium text-gray-200">Password</label> <input type="password"
+                    name="password"
+                    class="w-full border border-gray-600 rounded-lg p-2 bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-green-400 transition"
+                    placeholder="Password">
+            </div> <button id="submitBtn" type="submit"
+                class="w-full bg-green-800 text-white py-2 rounded-lg hover:bg-green-700 transition duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed">
+                Login </button> <span id="loading" class="hidden text-sm text-gray-400">Sedang memeriksa...</span>
         </form>
-
-
-        <div class="mt-6 text-center text-sm text-gray-600">
-            Belum punya akun?
-            <a href="/register" class="text-orange-500 font-semibold hover:underline">
-                Daftar
-            </a>
-        </div>
-
+        <div class="mt-6 text-center text-sm text-gray-400"> Belum punya akun? <a href="/register"
+                class="text-blue-500 font-semibold hover:underline"> Daftar </a> </div>
         <div class="flex items-center my-6">
-            <div class="flex-grow h-px bg-gray-300"></div>
-            <span class="px-3 text-gray-500 text-sm">atau</span>
-            <div class="flex-grow h-px bg-gray-300"></div>
-        </div>
-
-        {{-- Login Google --}}
-        <a href="{{ route('google.redirect') }}"
-            class="w-full flex items-center justify-center gap-2 border py-2 rounded-lg hover:bg-gray-50 transition">
-            <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5">
-            <span>Login dengan Google</span>
-        </a>
-
+            <div class="flex-grow h-px bg-gray-600"></div> <span class="px-3 text-gray-400 text-sm">atau</span>
+            <div class="flex-grow h-px bg-gray-600"></div>
+        </div> {{-- Login Google --}} <a href="{{ route('google.redirect') }}"
+            class="w-full flex items-center justify-center gap-2 border border-gray-600 py-2 rounded-lg hover:bg-gray-700 transition duration-300 text-white">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5"> <span>Login dengan
+                Google</span> </a>
     </div>
 
 </body>
@@ -135,7 +132,7 @@
 
                     let ok = document.createElement("div");
                     ok.classList.add("login-success", "text-green-600", "text-xs", "mt-1");
-                    ok.innerHTML = "✔ Data valid";
+                    ok.innerHTML = "Data valid";
 
                     input.insertAdjacentElement("afterend", ok);
                 }
@@ -152,7 +149,6 @@
 
         toast.textContent = message;
 
-        // warna berdasarkan status
         if (type === "error") {
             toast.className = "fixed top-5 right-5 z-50 px-4 py-3 rounded-lg shadow-lg text-white text-sm bg-red-600";
         } else {
@@ -162,13 +158,11 @@
         toast.style.opacity = "1";
         toast.style.transform = "translateY(0)";
 
-        // auto hilang
         setTimeout(() => {
             toast.style.opacity = "0";
             toast.style.transform = "translateY(-20px)";
         }, 3000);
 
-        // remove element setelah animasi
         setTimeout(() => {
             toast.classList.add("hidden");
         }, 3500);

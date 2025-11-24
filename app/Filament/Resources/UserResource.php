@@ -9,14 +9,15 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\UserResource\Pages;
+use Filament\Forms\Components\Actions\Action;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\UserResource\RelationManagers;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 
 class UserResource extends Resource
 {
@@ -26,7 +27,8 @@ class UserResource extends Resource
 
     // protected static ?string $navigationGroup = 'Menu';
 
-    protected static ?string $navigationLabel = 'User';
+    protected static ?string $navigationLabel = 'Pengguna';
+
 
     public static function getPluralLabel(): string
     {
@@ -41,7 +43,10 @@ class UserResource extends Resource
             ->schema([
                 TextInput::make('name'),
                 TextInput::make('email'),
-                TextInput::make('password'),
+                TextInput::make('password')
+                    ->password()
+                    ->live()
+                    ->revealable(),
                 Textarea::make('alamat'),
                 TextInput::make('no_telp'),
                 Select::make('role')
@@ -60,9 +65,11 @@ class UserResource extends Resource
                     ->searchable(),
                 TextColumn::make('email'),
                 TextColumn::make('role'),
+                TextColumn::make('activity'),
                 TextColumn::make('created_at')
                     ->label('dibuat')
                     ->formatStateUsing(fn(string $state): string => Carbon::make($state)->format('d F Y')),
+
             ])
             ->filters([
                 //

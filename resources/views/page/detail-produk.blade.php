@@ -1,90 +1,132 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="max-w-[1200px] mx-auto px-6 mt-10 pb-20">
+    <div class="container mt-5 pb-5">
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div class="row g-5">
 
             <!-- GAMBAR PRODUK -->
-            <div>
+            <div class="col-md-6">
+
                 <!-- Gambar Utama -->
-                <img id="mainImage" src="{{ asset('storage/' . $detail->image1) }}"
-                    class="w-full h-[380px] rounded-xl object-cover shadow-lg">
+                <div class="bg-transparent rounded shadow-sm overflow-hidden" style="height: 450px;">
+                    <img id="mainImage" src="{{ asset('storage/' . $detail->image1) }}" class="w-100 h-100 object-fit-cover">
+                </div>
+
 
                 <!-- Thumbnail -->
-                <div class="flex gap-3 mt-4">
-                    <img src="{{ asset('storage/' . $detail->image1) }}"
-                        class="thumbnail w-20 h-20 rounded-lg object-cover border hover:ring-2 hover:ring-[#ff6f00] cursor-pointer">
-                    <img src="{{ asset('storage/' . $detail->image2) }}"
-                        class="thumbnail w-20 h-20 rounded-lg object-cover border hover:ring-2 hover:ring-[#ff6f00] cursor-pointer">
-                    <img src="{{ asset('storage/' . $detail->image3) }}"
-                        class="thumbnail w-20 h-20 rounded-lg object-cover border hover:ring-2 hover:ring-[#ff6f00] cursor-pointer">
+                <div class="d-flex gap-2 mt-3">
+                    @foreach ([$detail->image1, $detail->image2, $detail->image3] as $thumb)
+                        @if ($thumb)
+                            <img src="{{ asset('storage/' . $thumb) }}"
+                                class="thumbnail rounded object-fit-cover border img-thumbnail"
+                                style="width: 80px; height: 80px; cursor:pointer;">
+                        @endif
+                    @endforeach
                 </div>
+
             </div>
 
             <!-- INFO PRODUK -->
-            <div>
-                <h1 class="text-3xl font-bold">{{ $detail->nama }}</h1>
+            <div class="col-md-6">
 
-                <p class="text-gray-500 mt-2">Kategori: <span class="font-semibold">{{ $detail->Category->nama }}</span></p>
+                <h1 class="fw-bold ">{{ $detail->nama }}</h1>
 
-                <p class="text-gray-600 mt-1">
-                    Stok: <span class="font-semibold" id="stokProduk">{{ $detail->stok }}</span>
+                <p class="text-muted fs-5">
+                    Kategori: <span class="fw-semibold">{{ $detail->Category->nama }}</span>
                 </p>
 
-                <p class="text-[#ff6f00] text-3xl font-bold mt-4"> Rp {{ number_format($detail->harga, 0, ',', '.') }}</p>
-
-                <p class="mt-6 text-gray-700 leading-relaxed">
-                    Deskripsi produk ini sangat lengkap dan detail untuk memberikan informasi kepada pembeli.
+                <p class="text-muted fs-5">
+                    Stok: <span class="fw-semibold" id="stokProduk">{{ $detail->stok }}</span>
                 </p>
 
-                <div class="mt-6 flex items-center gap-3">
-                    <span class="font-semibold">Jumlah:</span>
-                    <button type="button" id="decrease"
-                        class="w-8 h-8 flex items-center justify-center bg-gray-200 rounded hover:bg-gray-300">−</button>
-                    <input type="number" id="qty" value="1" min="1"
-                        class="w-12 text-center border rounded-lg">
-                    <button type="button" id="increase"
-                        class="w-8 h-8 flex items-center justify-center bg-gray-200 rounded hover:bg-gray-300">+</button>
+                <p class="text-black producct-price fw-bold fs-2">
+                    Rp.{{ number_format($detail->harga, 2) }}
+                </p>
+
+                <p class=" text-secondary ">
+                    {{ $detail->deskripsi ?? 'Deskripsi produk belum tersedia.' }}
+                </p>
+
+                <!-- JUMLAH -->
+                <div class="d-flex align-items-center gap-2 mt-4">
+                    <span class="fw-semibold fs-5">Jumlah:</span>
+
+                    <button type="button" id="decrease" class="btn btn-light border rounded-circle px-3">−</button>
+
+                    <input type="number" id="qty" value="1" min="1" class="form-control text-center"
+                        style="width:70px;">
+
+                    <button type="button" id="increase" class="btn btn-light border rounded-circle px-3">+</button>
                 </div>
 
                 <!-- ADD TO CART -->
-                <form id="addToCartForm" action="{{ route('cart.add') }}" method="POST">
+                <form id="addToCartForm" action="{{ route('cart.add') }}" method="POST" class="mt-4">
                     @csrf
                     <input type="hidden" name="product_id" value="{{ $detail->id }}">
                     <input type="hidden" name="qty" id="inputQty" value="1">
-                    <button type="submit" id="addToCartBtn" data-id="{{ $detail->id }}" data-qty="1"
-                        class="mt-8 w-full bg-[#ff6f00] text-white py-3 rounded-xl text-lg font-semibold shadow hover:bg-[#e65c00]">
+
+                    <button type="submit" class="btn btn-black text-white w-100 py-3 fs-5 fw-semibold">
                         Simpan ke Keranjang 🛒
                     </button>
                 </form>
 
-                <div id="notif" class="mt-2 text-red-500 font-semibold hidden"></div>
+                <div id="notif" class="alert alert-danger mt-3 d-none"></div>
 
             </div>
 
         </div>
+
         <!-- PRODUK TERKAIT -->
-        <h2 class="text-[1.6rem] font-bold text-[#ff6f00] mt-16 mb-6">Produk Terkait</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+        <h2 class="fw-bold mt-5 ">Produk Terkait</h2>
+
+        {{-- <div class="row g-4">
             @forelse ($relatedProducts as $item)
-                <div class="bg-white rounded-xl shadow-md hover:shadow-xl overflow-hidden cursor-pointer transition"> <img
-                        src="{{ asset('storage/' . $item->image1) }}" class="w-full h-[140px] object-cover">
-                    <div class="p-4">
-                        <p class="text-sm text-gray-500">{{ $item->Category->nama }}</p>
-                        <h3 class="font-semibold text-lg">{{ $item->nama }}</h3>
-                        <p class="text-sm text-gray-500 line-clamp-2"> {{ $item->deskripsi }} </p>
-                        <p class="font-bold text-green-600">Rp {{ number_format($item->harga, 0, ',', '.') }}</p> <a
-                            href="{{ route('detail-produk', $item->id) }}"
-                            class="mt-auto px-4 py-2 bg-[#ff6f00] text-white rounded-lg shadow-lg hover:bg-[#e65c00] text-center block">
-                            Lihat Produk </a>
-                    </div>
-            </div> @empty <p class="text-gray-500 col-span-4 text-center">Tidak ada produk terkait</p>
+                <div class="col-6 col-sm-4 col-md-3">
+
+                    @forelse ($relatedProducts as $item)
+                        <div class="col-12 col-md-4 col-lg-3 mb-5" data-aos="zoom-in">
+                            <a class="product-item" href="{{ route('detail-produk', $item->id) }}">
+                                <img src="{{ $item->image1 ? asset('storage/' . $item->image1) : asset('images/product-placeholder.png') }}"
+                                    class="img-fluid product-thumbnail">
+                                <h3 class="product-title">{{ $item->nama }}</h3>
+                                <strong class="product-price">Rp {{ number_format($item->harga, 0, ',', '.') }}</strong>
+                            </a>
+                        </div>
+                    @empty
+                        <p class="text-center text-muted">Tidak ada produk terkait</p>
+                    @endforelse
+
+                </div>
+            @empty
+                <p class="text-center text-muted">Tidak ada produk terkait</p>
             @endforelse
+        </div> --}}
+
+        <div class="product-section">
+            <div class="container">
+                <div class="row">
+                    <!-- Product Items -->
+                    @forelse ($relatedProducts as $item)
+                        <div class="col-12 col-md-4 col-lg-3 mb-5" data-aos="zoom-in">
+                            <a class="product-item" href="{{ route('detail-produk', $item->id) }}">
+                                <img src="{{ $item->image1 ? asset('storage/' . $item->image1) : asset('images/product-placeholder.png') }}"
+                                    class="img-fluid product-thumbnail">
+                                <h3 class="product-title">{{ $item->nama }}</h3>
+                                <strong class="product-price">Rp {{ number_format($item->harga, 0, ',', '.') }}</strong>
+                            </a>
+                        </div>
+                    @empty
+                        <p class="text-center text-muted">Tidak ada produk terkait</p>
+                    @endforelse
+
+                </div>
+            </div>
         </div>
 
-    </section>
+    </div>
 
+    <!-- SCRIPT -->
     <script>
         const mainImage = document.getElementById('mainImage');
         const thumbnails = document.querySelectorAll('.thumbnail');
@@ -101,6 +143,12 @@
         const notif = document.getElementById('notif');
         const form = document.getElementById('addToCartForm');
 
+        function showNotif(message) {
+            notif.textContent = message;
+            notif.classList.remove('d-none');
+            setTimeout(() => notif.classList.add('d-none'), 3000);
+        }
+
         document.getElementById('increase').addEventListener('click', () => {
             if (parseInt(mainQty.value) < stok) {
                 mainQty.value = parseInt(mainQty.value) + 1;
@@ -111,7 +159,9 @@
         });
 
         document.getElementById('decrease').addEventListener('click', () => {
-            if (mainQty.value > 1) mainQty.value = parseInt(mainQty.value) - 1;
+            if (mainQty.value > 1) {
+                mainQty.value = parseInt(mainQty.value) - 1;
+            }
             inputQty.value = mainQty.value;
         });
 
@@ -130,11 +180,5 @@
                 showNotif('Stok tidak cukup untuk jumlah ini!');
             }
         });
-
-        function showNotif(message) {
-            notif.textContent = message;
-            notif.classList.remove('hidden');
-            setTimeout(() => notif.classList.add('hidden'), 3000);
-        }
     </script>
 @endsection

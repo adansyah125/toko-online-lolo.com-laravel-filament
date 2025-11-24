@@ -1,120 +1,172 @@
 @extends('layouts.app')
 
+@section('title', 'Keranjang Belanja')
+
 @section('content')
-    <section class="max-w-[1200px] mx-auto px-4 sm:px-6 mt-8 pb-20">
 
-        <h2 class="text-2xl font-bold text-[#ff6f00] mb-4">Keranjang Belanja</h2>
+    <div class="container py-5">
 
-        <div class="bg-white rounded-xl shadow-md p-4 sm:p-5">
+        {{-- <h3 class="fw-bold mb-4 text-warning">Keranjang Belanja</h3> --}}
 
-            @if (count($cart) > 0)
-                <div class="space-y-4">
-                    @foreach ($cart as $id => $item)
-                        <div class="flex flex-col sm:flex-row sm:items-center gap-3 pb-4 border-b">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
 
-                            <img src="{{ asset('storage/' . $item['image']) }}"
-                                class="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover shadow">
+                @if (count($cart) > 0)
 
-                            <div class="flex-1">
-                                <h3 class="font-semibold text-base sm:text-lg leading-tight">{{ $item['name'] }}</h3>
-                                <p class="text-gray-500 text-sm">{{ $item['category'] ?? 'Kategori Produk' }}</p>
-                                <p class="text-[#ff6f00] font-bold text-base sm:text-lg mt-1">Rp
-                                    {{ number_format($item['price'], 0, ',', '.') }}</p>
-                            </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Product</th>
+                                    <th class="text-nowrap">Price</th>
+                                    <th class="text-nowrap">Quantity</th>
+                                    <th class="text-nowrap">Subtotal</th>
+                                    <th>Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                            <div class="flex items-center gap-2">
-                                <button
-                                    class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center bg-gray-200 rounded hover:bg-gray-300 decrease"
-                                    data-id="{{ $id }}">−</button>
-                                <span class="w-7 sm:w-8 text-center qty">{{ $item['qty'] }}</span>
-                                <button
-                                    class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center bg-gray-200 rounded hover:bg-gray-300 increase"
-                                    data-id="{{ $id }}">+</button>
-                            </div>
+                                @foreach ($cart as $item)
+                                    <tr>
+                                        <td>
+                                            <img src="{{ asset('storage/' . $item->product->image1) }}"
+                                                class="img-fluid rounded"
+                                                style="width: 70px; height:70px; object-fit:cover;">
+                                        </td>
 
-                            <div class="text-right ml-auto sm:ml-0">
-                                <p class="font-semibold text-sm sm:text-base subtotal">Rp
-                                    {{ number_format($item['price'] * $item['qty'], 0, ',', '.') }}</p>
-                                <form action="{{ route('cart.remove', $id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="text-red-500 text-xs sm:text-sm mt-1 hover:underline">Hapus</button>
-                                </form>
-                            </div>
+                                        <td>
+                                            <h6 class="mb-1">{{ $item->product->nama }}</h6>
+                                            <small
+                                                class="text-muted">{{ $item->product->category->nama ?? 'Kategori Produk' }}</small>
+                                        </td>
 
-                        </div>
-                    @endforeach
-                </div>
-            @else
-                <p class="text-gray-500 text-center py-10">Keranjang kosong</p>
-            @endif
+                                        <td>
+                                            Rp {{ number_format($item->harga, 0, ',', '.') }}
+                                        </td>
 
+                                        <td class="text-center">
+                                            <div class="d-flex justify-content-center align-items-center gap-2">
+
+                                                <button class="btn btn-outline-secondary btn-sm decrease"
+                                                    data-id="{{ $item->id }}">−</button>
+
+                                                <span class="px-2 fw-bold qty">{{ $item->qty }}</span>
+
+                                                <button class="btn btn-outline-secondary btn-sm increase"
+                                                    data-id="{{ $item->id }}">+</button>
+
+                                            </div>
+                                        </td>
+
+                                        <td class="subtotal fw-bold">
+                                            Rp {{ number_format($item->qty * $item->harga, 0, ',', '.') }}
+                                        </td>
+
+                                        <td>
+                                            <form action="{{ route('cart.remove', $item->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-sm btn-danger">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <p class="text-center fs-3 py-5 text-muted">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" style="width: 30px; height:30px">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                        </svg>
+
+                        Keranjang kosong
+                    </p>
+                @endif
+
+            </div>
         </div>
 
         @if (count($cart) > 0)
-            <div class="bg-white rounded-xl shadow-md p-4 sm:p-5 mt-6">
-                <div class="flex justify-between items-center text-base sm:text-lg font-semibold">
-                    <span>Total</span>
-                    <span class="text-[#ff6f00] total">Rp {{ number_format($total, 0, ',', '.') }}</span>
+            <div class="row justify-content-end">
+                <div class="col-md-6">
+
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+
+                            <h5 class="fw-bold mb-3">Total Belanja</h5>
+
+                            <div class="d-flex justify-content-between mb-3">
+                                <span>Subtotal:</span>
+                                <span class="fw-bold text-black total">
+                                    Rp {{ number_format($total, 0, ',', '.') }}
+                                </span>
+                            </div>
+
+                            <form action="{{ route('checkout') }}" method="GET">
+                                @csrf
+
+                                <button class="btn btn-black text-white w-100 fw-bold py-2">
+                                    Pesan Sekarang
+                                </button>
+                            </form>
+
+                        </div>
+                    </div>
+
                 </div>
-
-                <form action="{{ route('checkout') }}" method="get">
-                    @csrf
-                    <input type="hidden" name="product_id" value="{{ $id }}">
-                    <input type="hidden" name="qty" value="{{ $item['qty'] }}">
-
-                    <!-- Data penerima bisa ditambahkan di halaman order / checkout -->
-
-                    <button type="submit"
-                        class="w-full mt-4 block bg-[#ff6f00] text-white py-3 rounded-xl text-lg font-semibold shadow hover:bg-[#e65c00] text-center">
-                        Pesan Sekarang
-                    </button>
-                </form>
             </div>
         @endif
 
-    </section>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
 
-            function updateCart(id, qty, spanQty, subtotalEl) {
+            function updateCart(id, qty, qtyEl, subtotalEl) {
                 $.post("{{ route('cart.updateQty') }}", {
                     _token: "{{ csrf_token() }}",
                     id: id,
                     qty: qty
                 }, function(data) {
-                    // update qty dan subtotal
-                    spanQty.text(qty);
-                    subtotalEl.text('Rp ' + data.subtotal);
 
-                    // update total
-                    $('.total').text('Rp ' + data.total);
+                    qtyEl.text(qty);
+                    subtotalEl.text("Rp " + data.subtotal);
+                    $(".total").text("Rp " + data.total);
+
                 });
             }
 
-            $('.increase').click(function() {
-                let id = $(this).data('id');
-                let qtyEl = $(this).siblings('.qty');
+            $(".increase").click(function() {
+                let id = $(this).data("id");
+                let qtyEl = $(this).siblings(".qty");
                 let qty = parseInt(qtyEl.text()) + 1;
-                let subtotalEl = $(this).closest('.flex').siblings('.text-right').find('.subtotal');
+
+                let subtotalEl = $(this).closest("tr").find(".subtotal");
 
                 updateCart(id, qty, qtyEl, subtotalEl);
             });
 
-            $('.decrease').click(function() {
-                let id = $(this).data('id');
-                let qtyEl = $(this).siblings('.qty');
+            $(".decrease").click(function() {
+                let id = $(this).data("id");
+                let qtyEl = $(this).siblings(".qty");
                 let qty = parseInt(qtyEl.text()) - 1;
-                if (qty < 1) qty = 1; // minimal 1
-                let subtotalEl = $(this).closest('.flex').siblings('.text-right').find('.subtotal');
+                if (qty < 1) qty = 1;
+
+                let subtotalEl = $(this).closest("tr").find(".subtotal");
 
                 updateCart(id, qty, qtyEl, subtotalEl);
             });
 
         });
     </script>
-
 
 @endsection

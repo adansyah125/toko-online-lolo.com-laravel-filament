@@ -35,16 +35,16 @@ class DatabaseSeeder extends Seeder
             'role' =>  'user',
         ]);
 
-        $kategoriMakanan = Category::create(['nama' => 'Makanan']);
-        Category::create(['nama' => 'Minuman']);
-        Category::create(['nama' => 'Kesehatan']);
-        Category::create(['nama' => 'Melayang']);
+        $kategoriAksesoris = Category::create(['nama' => 'Aksesoris']);
+        Category::create(['nama' => 'Elektronik']);
+        Category::create(['nama' => 'Robotik']);
+        Category::create(['nama' => 'Service']);
 
 
         Product::create([
-            'category_id' => $kategoriMakanan->id,
-            'nama' => 'Burger',
-            'deskripsi' => 'Burger atau hamburger adalah salah satu makanan cepat saji yang paling populer di dunia. Dari restoran cepat saji hingga restoran mewah, makanan ini telah menjadi favorit banyak orang karena kepraktisan dan kelezatannya. Artikel ini akan membahas secara lengkap mengenai sejarah, pengertian, jenis, bahan, dan cara membuatnya.',
+            'category_id' => $kategoriAksesoris->id,
+            'nama' => 'Keychain',
+            'deskripsi' => 'keychain dengan desain unik dan kualitas tinggi untuk kebutuhan Anda. Tersedia dalam berbagai warna dan ukuran. Sangat cocok untuk kebutuhan personal atau bisnis Anda. Buatlah kepercayaan terhadap dirimu sendiri dengan keychain ini. Buatlah kepercayaan terhadap dirimu sendiri dengan keychain ini.',
             'stok' => 10,
             'harga' => 20000,
             'image1' => '01KA6WYA06TNA95QYJC86S0YAG.jpg',

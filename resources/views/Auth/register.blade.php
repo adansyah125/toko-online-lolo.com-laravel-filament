@@ -7,49 +7,53 @@
     <title>Daftar</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'glyphicons-halflings', sans-serif;
+        }
+
+        /* Fade-in animation */
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Input focus dark mode */
+        input:focus {
+            outline: none;
+        }
+    </style>
 </head>
 
-<body class="bg-gray-100 sm:px-0 px-4 flex items-center justify-center min-h-screen">
+<body class="bg-gray-900 sm:px-0 px-4 flex items-center justify-center min-h-screen">
 
-    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
-
-        <h2 class="text-2xl font-bold text-center mb-6">Daftar Akun</h2>
-
-        <form id="registerForm" action="{{ route('user.register.post') }}" method="POST" class="space-y-4">
-            @csrf
-
-            <div>
-                <label class="block mb-1 text-sm font-medium">Nama</label>
-                <input type="text" name="name"
-                    class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-orange-400" required>
+    <div class="bg-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-md fade-in">
+        <h2 class="text-2xl font-bold text-center text-gray-300 mb-1">PK 1.2</h2>
+        <p class="text-center text-gray-300 mb-6">Isi form dibawah ini untuk mendaftar</p>
+        <form id="registerForm" action="{{ route('user.register.post') }}" method="POST" class="space-y-4"> @csrf <div>
+                <label class="block mb-1 text-sm font-medium text-gray-200">Nama Lengkap</label> <input type="text"
+                    name="name" required
+                    class="w-full border border-gray-600 rounded-lg p-2 bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-green-400 transition">
             </div>
-
-            <div>
-                <label class="block mb-1 text-sm font-medium">Email</label>
-                <input type="email" name="email"
-                    class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-orange-400" required>
+            <div> <label class="block mb-1 text-sm font-medium text-gray-200">Email</label> <input type="email"
+                    name="email" required
+                    class="w-full border border-gray-600 rounded-lg p-2 bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-green-400 transition">
             </div>
-
-            <div>
-                <label class="block mb-1 text-sm font-medium">Password</label>
-                <input type="password" name="password"
-                    class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-orange-400" required>
-            </div>
-
-            <button type="submit" id="submitBtn"
-                class="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition">
-                Daftar
-            </button>
+            <div> <label class="block mb-1 text-sm font-medium text-gray-200">Password</label> <input type="password"
+                    name="password" required
+                    class="w-full border border-gray-600 rounded-lg p-2 bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-green-400 transition">
+            </div> <button type="submit" id="submitBtn"
+                class="w-full bg-green-700 text-white py-2 rounded-lg hover:bg-green-800 transition duration-300">
+                Daftar </button> <span id="loading" class="hidden text-sm text-gray-400">Sedang memeriksa...</span>
         </form>
-        <span id="loading" class="hidden ml-2 text-sm">Validasi...</span>
-
-        <div class="text-center mt-6 text-sm text-gray-600">
-            Sudah punya akun?
-            <a href="/login" class="text-orange-500 font-semibold hover:underline">
-                Login
-            </a>
-        </div>
-
+        <div class="text-center mt-6 text-sm text-gray-400"> Sudah punya akun? <a href="/login"
+                class="text-blue-500 font-semibold hover:underline"> Login </a> </div>
     </div>
 
 </body>
@@ -58,7 +62,6 @@
     const inputs = document.querySelectorAll("input[name='name'], input[name='email'], input[name='password']");
     const submitBtn = document.getElementById("submitBtn");
 
-    // Ubah tulisan loading ke bahasa Indonesia
     const loadingText = document.getElementById("loading");
     loadingText.textContent = "Sedang memeriksa...";
 
@@ -117,7 +120,7 @@
 
                     let ok = document.createElement("div");
                     ok.classList.add("success-msg", "text-green-600", "text-xs", "mt-1");
-                    ok.innerHTML = "✔ Data valid";
+                    ok.innerHTML = " Data valid";
                     input.insertAdjacentElement("afterend", ok);
                 }
             });

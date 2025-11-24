@@ -14,9 +14,8 @@ class Informasi extends Model
 
     protected static function booted()
     {
-        // Hapus file lama saat update
         static::updating(function ($informasi) {
-            if ($informasi->isDirty('video')) { // cek apakah video diupdate
+            if ($informasi->isDirty('video')) {
                 $oldVideo = $informasi->getOriginal('video');
                 if ($oldVideo && Storage::disk('public')->exists($oldVideo)) {
                     Storage::disk('public')->delete($oldVideo);
@@ -24,7 +23,7 @@ class Informasi extends Model
             }
         });
 
-        // Hapus file saat record dihapus
+
         static::deleting(function ($informasi) {
             if ($informasi->video && Storage::disk('public')->exists($informasi->video)) {
                 Storage::disk('public')->delete($informasi->video);

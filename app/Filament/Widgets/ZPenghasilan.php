@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Order;
+use App\Models\Payment;
 use Filament\Widgets\ChartWidget;
 
 class ZPenghasilan extends ChartWidget
@@ -16,13 +17,13 @@ class ZPenghasilan extends ChartWidget
 
     public function mount(): void
     {
-        $this->year = request()->get('year', now()->year); // default tahun sekarang
+        $this->year = request()->get('year', now()->year);
     }
     public ?int $year = null;
 
     protected function getData(): array
     {
-        $penghasilan = Order::selectRaw("MONTH(created_at) as bulan, SUM(total_harga) as total")
+        $penghasilan = Payment::selectRaw("MONTH(created_at) as bulan, SUM(price) as total")
             ->whereYear("created_at", $this->year)
             ->groupBy("bulan")
             ->pluck("total", "bulan")

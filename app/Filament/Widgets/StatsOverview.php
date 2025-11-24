@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\Product;
 use Illuminate\Foundation\Auth\User;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -19,7 +20,7 @@ class StatsOverview extends BaseWidget
         // Jumlah pengguna
         $jumlahUser = User::count();
 
-        $penghasilan = Order::sum('total_harga');
+        $penghasilan = Payment::sum('price');
         $formatPenghasilan = 'Rp ' . number_format($penghasilan, 0, ',', '.');
 
         return [

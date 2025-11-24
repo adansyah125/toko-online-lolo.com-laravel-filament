@@ -1,89 +1,137 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>LOLO</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Untree.co">
+    <meta name="description" content="">
+    <meta name="keywords" content="bootstrap, bootstrap4">
+    <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-    <!-- POPPINS FONT -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <!-- Stylesheets -->
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="{{ asset('css/tiny-slider.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
-    <script src="//unpkg.com/alpinejs" defer></script>
-
-    <!-- TAILWIND CDN -->
-    @vite('resources/css/app.css')
+    <title>PK1.2 - @yield('title')</title>
     <style>
         body {
-            font-family: "glyphicons-halflings", sans-serif;
+            font-family: 'glyphicons-halflings', sans-serif;
         }
     </style>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 </head>
 
+<body>
 
-<body class="bg-[#f9f9f9] text-[#333]">
-    <!-- HEADER -->
-    @include('layouts.navbar')
+    <!-- Navigation -->
+    <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
+        <div class="container">
+            <a class="navbar-brand" href="/">PK1.2</a>
 
-    <div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
+                aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsFurni">
+                <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+                    <li class="nav-item @if (request()->routeIs('dashboard')) active @endif">
+                        <a class="nav-link" href="{{ route('dashboard') }}">Beranda</a>
+                    </li>
+                    <li class="nav-item @if (request()->routeIs('shop')) active @endif">
+                        <a class="nav-link" href="{{ route('shop') }}">Shop</a>
+                    </li>
+                    <li class="nav-item @if (request()->routeIs('pesanan')) active @endif ">
+                        <a class="nav-link" href="{{ route('pesanan') }}">Pesanan Saya</a>
+                    </li>
+                    <li class="nav-item @if (request()->routeIs('about')) active @endif ">
+                        <a class="nav-link" href="{{ route('about') }}">Tentang Kami</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="blog">Blog</a>
+                    </li>
+                    <li class="nav-item @if (request()->routeIs('contact')) active @endif  ">
+                        <a class="nav-link" href="{{ route('contact') }}">Contact</a>
+                    </li>
+                </ul>
+
+                <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+                    {{-- Cart Icon --}}
+                    <li class="nav-item me-3 position-relative">
+                        @php
+                            $cart = session('cart', []);
+                            $cartCount = array_sum(array_column($cart, 'quantity'));
+                        @endphp
+                        <a class="nav-link" href="{{ route('cart.index') }}">
+                            <img src="{{ asset('images/cart.svg') }}" alt="Cart">
+                            @if ($cartCount > 0)
+                                <span
+                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ $cartCount }}
+                                </span>
+                            @endif
+                        </a>
+                    </li>
+
+
+                    {{-- User Icon --}}
+                    <li class="nav-item dropdown">
+                        @auth
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="{{ asset('images/user.svg') }}" alt="User">
+                                <span class="ms-2 text-white">{{ Auth::user()->name }}</span>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                                <li>
+                                    <form method="POST" action="{{ route('user.logout') }}">
+                                        @csrf
+                                        <button class="dropdown-item" type="submit">Logout</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        @else
+                            <a class="nav-link" href="{{ route('login') }}">
+                                <img src="{{ asset('images/user.svg') }}" alt="Login">
+                            </a>
+                        @endauth
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- End Navigation -->
+
+    <!-- End Navigation -->
+
+    <main>
         @yield('content')
+    </main>
 
-    </div>
+    <!-- Footer -->
 
-    <!-- FOOTER -->
+    <!-- End Footer -->
 
-
-
-    <!-- SLIDER SCRIPT -->
+    <!-- Scripts -->
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/tiny-slider.js') }}"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        const bannerSlide = document.getElementById("bannerSlide");
-        let currentBanner = 0;
-        const total = bannerSlide.children.length;
-
-        function updateSlide() {
-            bannerSlide.style.transform = `translateX(-${currentBanner * 100}%)`;
-        }
-
-        setInterval(() => {
-            currentBanner = (currentBanner + 1) % total;
-            updateSlide();
-        }, 5000);
-    </script>
-
-    {{-- //badge keranjang --}}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.addToCartBtn').click(function(e) {
-                e.preventDefault();
-                let productId = $(this).data('id');
-                let qty = $(this).data('qty') || 1;
-
-                $.ajax({
-                    url: "{{ route('cart.add') }}",
-                    type: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        product_id: productId,
-                        qty: qty
-                    },
-                    success: function(res) {
-                        // res.cart_count dikirim dari controller
-                        $('#cartBadge').text(res.cart_count);
-
-                        // opsional: toast notifikasi
-                        alert('Produk berhasil ditambahkan ke keranjang!');
-                    },
-                    error: function(err) {
-                        console.error(err);
-                    }
-                });
-            });
+        AOS.init({
+            duration: 800,
+            once: true
         });
     </script>
-
-
-
+    @stack('scripts')
 </body>
 
 </html>

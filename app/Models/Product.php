@@ -23,10 +23,10 @@ class Product extends Model
 
     protected static function booted()
     {
-        // Hapus file lama saat update
+
         static::updating(function ($product) {
             foreach (['image1', 'image2', 'image3'] as $image) {
-                if ($product->isDirty($image)) { // cek apakah field diupdate
+                if ($product->isDirty($image)) {
                     $oldImage = $product->getOriginal($image);
                     if ($oldImage && Storage::disk('public')->exists($oldImage)) {
                         Storage::disk('public')->delete($oldImage);
@@ -35,7 +35,7 @@ class Product extends Model
             }
         });
 
-        // Hapus file saat record dihapus
+
         static::deleting(function ($product) {
             foreach (['image1', 'image2', 'image3'] as $image) {
                 if ($product->$image && Storage::disk('public')->exists($product->$image)) {

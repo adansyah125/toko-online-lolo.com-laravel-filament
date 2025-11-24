@@ -30,7 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->favicon(asset('favicon.png'))
-            ->brandName('Lolo.com')
+            ->brandName('PK1.2')
             ->login(CustomLogin::class)
             ->profile()
             ->colors([

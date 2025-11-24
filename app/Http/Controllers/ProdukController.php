@@ -16,6 +16,7 @@ class ProdukController extends Controller
         return view('page.produk', compact('produk', 'kategori'));
     }
 
+
     public function detail($id)
     {
         $detail = Product::with('Category')->findOrFail($id);

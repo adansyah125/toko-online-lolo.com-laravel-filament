@@ -1,32 +1,43 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\DashboardController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 
 Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
-Route::get('/produk', [ProdukController::class, 'index']);
+Route::get('about', [DashboardController::class, 'about'])->name('about');
+Route::get('contact', [DashboardController::class, 'contact'])->name('contact');
+Route::get('/produk', [ProdukController::class, 'index'])->name('shop');
 Route::get('/produk/detail/{id}', [ProdukController::class, 'detail'])->name('detail-produk');
 
-Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('google.redirect');
-Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('google.callback');
 
 Route::middleware(['auth', 'onlyuser'])->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
     Route::delete('/keranjang/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/cart/update', [CartController::class, 'updateQty'])->name('cart.updateQty');
-    Route::get('/pesanan', [OrderController::class, 'index'])->name('pesanan');
+
     Route::get('/order', [OrderController::class, 'order'])->name('checkout');
     Route::post('/order/add', [OrderController::class, 'store'])->name('pesanan.add');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
-    Route::get('/profile', [AuthController::class, 'profile'])->name('user.profile');
-});
 
+    Route::get('/pesanan', [OrderController::class, 'index'])->name('pesanan');
+    Route::get('/pesanan/delete/{id}', [OrderController::class, 'delete'])->name('pesanan.delete');
+    Route::get('/pesanan/{order_id}', [OrderController::class, 'viewPesanan'])->name('lihat-pesanan');
+
+    Route::post('/payment/{order_id}/bayar', [PaymentController::class, 'bayar'])->name('pesanan.bayar');
+    Route::post('/payment/{order_id}/lunas', [PaymentController::class, 'markAsLunas'])->name('payment.success');
+    Route::post('/midtrans/callback', [PaymentController::class, 'callback'])->name('midtrans.callback');
+
+    Route::get('/profile', [AuthController::class, 'profile'])->name('user.profile');
+    Route::put('/profile/update', [AuthController::class, 'profileUpdate'])->name('user.profile.update');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
+});
 
 Route::middleware('guestuser')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -34,23 +45,13 @@ Route::middleware('guestuser')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('user.register.post');
     Route::post('validate/register', [AuthController::class, 'validateRegis'])->name('validate.register');
     Route::post('validate/login', [AuthController::class, 'validateLogin'])->name('validate.login');
+    Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('google.redirect');
+    Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('google.callback');
     Route::get('/register', function () {
         return view('Auth.register');
     });
 });
 
-
-
-
-
-Route::get('/about', function () {
-    return view('about');
-});
-
-
-Route::get('/lihat-pesanan', function () {
-    return view('page.lihat-pesanan');
-});
-Route::get('/detail-produk', function () {
-    return view('page.detail-produk');
+Route::get('/blog', function () {
+    return view('page.blog');
 });
