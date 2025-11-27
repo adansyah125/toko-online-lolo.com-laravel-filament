@@ -55,9 +55,6 @@
                     <li class="nav-item @if (request()->routeIs('about')) active @endif ">
                         <a class="nav-link" href="{{ route('about') }}">Tentang Kami</a>
                     </li>
-                    <li class="nav-item ">
-                        <a class="nav-link" href="blog">Blog</a>
-                    </li>
                     <li class="nav-item @if (request()->routeIs('contact')) active @endif  ">
                         <a class="nav-link" href="{{ route('contact') }}">Contact</a>
                     </li>

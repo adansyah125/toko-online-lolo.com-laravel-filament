@@ -17,7 +17,6 @@
     <div class="untree_co-section product-section before-footer-section">
         <div class="container">
             <div class="row" id="productContainer">
-
                 @forelse ($produk as $item)
                     <div class="col-12 col-md-4 col-lg-3 mb-5 product-item-wrapper"
                         data-name="{{ strtolower($item->nama) }}"
@@ -26,11 +25,10 @@
                         <div class="product-item position-relative">
                             <a href="{{ route('detail-produk', $item->id) }}">
                                 <img src="{{ $item->image1 ? asset('storage/' . $item->image1) : asset('images/product-placeholder.png') }}"
-                                    class="img-fluid product-thumbnail">
+                                    class="img-fluid product-thumbnail rounded">
 
                                 <h3 class="product-title">{{ $item->nama }}</h3>
-                                <strong class="product-price">Rp
-                                    {{ number_format($item->harga, 0, ',', '.') }}</strong>
+                                <strong class="product-price">Rp{{ number_format($item->harga, 0, ',', '.') }}</strong>
                             </a>
 
                             <form action="{{ route('cart.add', $item->id) }}" method="POST"

@@ -138,7 +138,7 @@ class OrderController extends Controller
 
         $order->delete();
 
-        return redirect('pesanan')->with('success', "Pesanan dengan kode <b>" + $order->order_id + "</b> Berhasil Dibatalkan");
+        return redirect('pesanan')->with('success', "Pesanan dengan kode <b>" . $order->order_id . "</b> Berhasil Dibatalkan");
     }
 
 
@@ -194,5 +194,18 @@ class OrderController extends Controller
             ->setPaper('A4', 'portrait');
 
         return $pdf->stream('invoice-' . $order_id . '.pdf');
+    }
+
+    public function search(Request $request)
+    {
+        $q = $request->q;
+
+        $orders = Order::with(['payment' => function ($q) {
+            $q->latest();
+        }])
+            ->where('order_id', 'LIKE', "%$q%")
+            ->get();
+
+        return response()->json($orders);
     }
 }

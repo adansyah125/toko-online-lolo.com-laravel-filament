@@ -55,8 +55,11 @@
                         </p>
                         <p class="small text-dark"><strong>Status:</strong> {{ $order->status }}</p>
                         <p class="small text-dark"><strong>Pengiriman:</strong>
-                            @php $pay = $order->payment->first(); @endphp
-                            {{ $pay->order_status }}
+                            @php
+                                $pay = $order->payment->first();
+                            @endphp
+
+                            {{ $pay ? $pay->order_status : '-' }}
                         </p>
                     </div>
 

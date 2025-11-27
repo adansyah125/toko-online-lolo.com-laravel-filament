@@ -10,31 +10,37 @@
                 <div class="row mb-5">
                     <div class="col-12">
                         <div class="table-responsive">
+                            <div class="mb-3 text-end">
+                                <input type="text" id="searchOrderInput" class="form-control w-25 d-inline-block"
+                                    placeholder="Cari kode pesanan..." autocomplete="off">
+                            </div>
+
                             <table class="table align-middle">
                                 <thead class="thead-light text-center">
                                     <tr>
                                         <th>Kode Pesanan</th>
                                         <th>Nama Produk</th>
-                                        <th class="text-nowrap">Total Harga</th>
                                         <th class="text-nowrap">Jumlah</th>
-                                        <th>Status</th>
+                                        <th class="text-nowrap">Total</th>
+                                        <th>Pembayaran</th>
                                         <th>Pengiriman</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-center">
                                     @forelse($orders as $order)
-                                        <tr class="border-0" style="transition: 0.2s;">
+                                        <tr class="border-0 order-item" data-name="{{ strtolower($order->order_id) }}"
+                                            style="transition: 0.2s;">
 
                                             <td class="text-muted py-3">{{ $order->order_id }}</td>
                                             <td class="fw-semibold py-3">{{ $order->nama_produk }}</td>
 
+                                            <td class="text-muted py-3">{{ $order->qty }}</td>
 
                                             <td class="fw-bold text-black py-3">
                                                 Rp {{ number_format($order->total_harga, 0, ',', '.') }}
                                             </td>
 
-                                            <td class="text-muted py-3">{{ $order->qty }}</td>
 
 
                                             <td class="py-3">
@@ -48,7 +54,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                @if ($order->payment)
+                                                @if ($order->payment && $order->payment->first())
                                                     @php $pay = $order->payment->first(); @endphp
                                                     @if ($pay->order_status == 'proses')
                                                         <span class="badge rounded-pill bg-warning text-dark px-3 py-2">
@@ -57,7 +63,8 @@
                                                         <span class="badge rounded-pill bg-info text-dark px-3 py-2">Sedang
                                                             Dikirim</span>
                                                     @elseif($pay->order_status == 'selesai')
-                                                        <span class="badge rounded-pill bg-success px-3 py-2">Selesai</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-success px-3 py-2">Diterima</span>
                                                     @else
                                                         <span class="badge rounded-pill bg-secondary px-3 py-2">-</span>
                                                     @endif
@@ -116,6 +123,9 @@
                                     @endforelse
                                 </tbody>
                             </table>
+                            <p id="notFoundMessage" class="text-center text-muted d-none">
+                                Pencarian Kode Pesanan tidak ditemukan.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -146,6 +156,35 @@
             });
         </script>
     @endif
+    <script>
+        document.getElementById('searchOrderInput').addEventListener('keyup', function() {
+            let keyword = this.value.toLowerCase().trim();
+            let rows = document.querySelectorAll('.order-item');
+            let found = false;
+
+            rows.forEach(row => {
+                let kode = row.dataset.name.toLowerCase();
+                let namaProduk = row.querySelector('td:nth-child(2)').innerText.toLowerCase();
+
+                if (kode.includes(keyword) || namaProduk.includes(keyword)) {
+                    row.style.display = "";
+                    found = true;
+                } else {
+                    row.style.display = "none";
+                }
+            });
+
+            // Toggle pesan jika tidak ada hasil
+            const notFoundMessage = document.getElementById('notFoundMessage');
+            if (!found) {
+                notFoundMessage.classList.remove('d-none');
+            } else {
+                notFoundMessage.classList.add('d-none');
+            }
+        });
+    </script>
+
+
 @endsection
 <script>
     function confirmCancel(orderId, url) {

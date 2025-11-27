@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Activity;
-use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Models\User;
+use App\Models\Activity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 class AuthController extends Controller
 {
@@ -183,5 +184,49 @@ class AuthController extends Controller
         $user->save();
 
         return back()->with('success', 'Profil berhasil diperbarui!');
+    }
+
+    public function showLinkRequestForm()
+    {
+        return view('Auth.forgot-password');
+    }
+
+    public function sendResetLinkEmail(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        return $status === Password::RESET_LINK_SENT
+            ? back()->with('toast_success', 'Link reset password telah dikirim ke email Anda!')
+            : back()->with('toast_error', 'Email tidak ditemukan!');
+    }
+
+    public function showResetForm($token)
+    {
+        return view('Auth.reset-password', ['token' => $token]);
+    }
+
+    public function reset(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user) use ($request) {
+                $user->password = Hash::make($request->password);
+                $user->save();
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+            ? redirect()->route('login')->with('toast_success', 'Password berhasil direset!')
+            : back()->with('toast_error', 'Token tidak valid atau email salah!');
     }
 }

@@ -78,10 +78,17 @@
                     </button>
                 </div>
             </div>
+            <div class="text-right mt-2">
+                <a href="{{ route('password.request') }}" class="text-blue-400 text-sm hover:underline">
+                    Lupa Password?
+                </a>
+            </div>
 
             <button id="submitBtn" type="submit"
                 class="w-full bg-green-800 text-white py-2 rounded-lg hover:bg-green-700 transition duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed">
                 Login </button>
+
+
         </form>
         <div class="mt-6 text-center text-sm text-gray-400"> Belum punya akun? <a href="/register"
                 class="text-blue-500 font-semibold hover:underline"> Daftar </a> </div>

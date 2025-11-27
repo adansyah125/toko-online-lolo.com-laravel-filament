@@ -16,7 +16,6 @@ Route::get('contact', [DashboardController::class, 'contact'])->name('contact');
 Route::get('/produk', [ProdukController::class, 'index'])->name('shop');
 Route::get('/produk/detail/{id}', [ProdukController::class, 'detail'])->name('detail-produk');
 
-
 Route::middleware(['auth', 'onlyuser'])->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
@@ -26,11 +25,13 @@ Route::middleware(['auth', 'onlyuser'])->group(function () {
     // Route::get('/order', [OrderController::class, 'order'])->name('checkout');
     Route::post('/order/add', [OrderController::class, 'store'])->name('pesanan.add');
     Route::get('/order', [OrderController::class, 'order'])->name('checkout');
+
     Route::post('get-regencie', [OrderController::class, 'getRegencie'])->name('get.regencie');
     Route::post('get-district', [OrderController::class, 'getDistrict'])->name('get.district');
     Route::post('get-village', [OrderController::class, 'getVillage'])->name('get.village');
 
     Route::get('/pesanan', [OrderController::class, 'index'])->name('pesanan');
+    Route::get('/pesanan/search', [OrderController::class, 'search'])->name('pesanan.search');
     Route::get('/pesanan/delete/{id}', [OrderController::class, 'delete'])->name('pesanan.delete');
     Route::get('/pesanan/{order_id}', [OrderController::class, 'viewPesanan'])->name('lihat-pesanan');
     Route::get('/pesanan/{order_id}/cetak', [OrderController::class, 'cetak'])
@@ -56,9 +57,15 @@ Route::middleware('guestuser')->group(function () {
     Route::get('/register', function () {
         return view('Auth.register');
     });
-});
+    Route::get('/forgot-password', [AuthController::class, 'showLinkRequestForm'])
+        ->name('password.request');
 
+    Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])
+        ->name('password.email');
 
-Route::get('/blog', function () {
-    return view('page.blog');
+    Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])
+        ->name('password.reset');
+
+    Route::post('/reset-password', [AuthController::class, 'reset'])
+        ->name('password.update');
 });
