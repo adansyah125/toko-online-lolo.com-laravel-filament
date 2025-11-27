@@ -70,7 +70,7 @@
                                 <div class="icon">
                                     <img src="{{ asset('images/truck.svg') }}" class="img-fluid">
                                 </div>
-                                <h3>Pengiriman cepat & Grais Ongkir</h3>
+                                <h3>Pengiriman cepat & Gratis Ongkir</h3>
                                 <p>Donec vitae odio quis nisl dapibus...</p>
                             </div>
                         </div>
@@ -131,15 +131,15 @@
                 </div>
 
                 <div class="col-lg-5 ps-lg-5" data-aos="fade-left">
-                    <h2 class="section-title mb-4">We Help You Make Modern Interior Design</h2>
-                    <p>Donec facilisis quam ut purus rutrum lobortis...</p>
+                    <h2 class="section-title mb-4">Kami Juga Menyediakan</h2>
+                    <p>Service Online dan Repair...</p>
                     <ul class="list-unstyled custom-list my-4">
-                        <li>Donec vitae odio quis nisl dapibus...</li>
-                        <li>Donec vitae odio quis nisl dapibus...</li>
-                        <li>Donec vitae odio quis nisl dapibus...</li>
-                        <li>Donec vitae odio quis nisl dapibus...</li>
+                        <li>Service Mesin Komputer</li>
+                        <li>Repair Sparepart</li>
+                        <li>Service Laptop</li>
+                        <li>Service Tablet</li>
                     </ul>
-                    <p><a href="" class="btn">Explore</a></p>
+                    <p><a href="https://wa.me/6289677121092" class="btn">Hubungi Kami</a></p>
                 </div>
 
             </div>

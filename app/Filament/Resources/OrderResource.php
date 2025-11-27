@@ -56,12 +56,15 @@ class OrderResource extends Resource
                 TextColumn::make('no_telp')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('ekspedisi')
-                    ->searchable()
-                    ->sortable(),
                 TextColumn::make('payment.order_status')
                     ->searchable()
                     ->sortable()
+                    ->badge()
+                    ->colors([
+                        'warning' => 'proses',
+                        'info' => 'kirim',
+                        'success' => 'selesai',
+                    ])
                     ->label('Status Pesanan'),
                 TextColumn::make('status')
                     ->searchable()

@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('nama_penerima');
             $table->char('no_telp', 13);
             $table->string('alamat');
-            $table->enum('ekspedisi', ['JNE', 'JNT', 'Sicepat', 'AnterAja'])->default('JNE');
             $table->enum('status', ['pending', 'paid', 'failed'])->default('pending');
             $table->timestamps();
         });

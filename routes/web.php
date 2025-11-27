@@ -23,12 +23,18 @@ Route::middleware(['auth', 'onlyuser'])->group(function () {
     Route::delete('/keranjang/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/cart/update', [CartController::class, 'updateQty'])->name('cart.updateQty');
 
-    Route::get('/order', [OrderController::class, 'order'])->name('checkout');
+    // Route::get('/order', [OrderController::class, 'order'])->name('checkout');
     Route::post('/order/add', [OrderController::class, 'store'])->name('pesanan.add');
+    Route::get('/order', [OrderController::class, 'order'])->name('checkout');
+    Route::post('get-regencie', [OrderController::class, 'getRegencie'])->name('get.regencie');
+    Route::post('get-district', [OrderController::class, 'getDistrict'])->name('get.district');
+    Route::post('get-village', [OrderController::class, 'getVillage'])->name('get.village');
 
     Route::get('/pesanan', [OrderController::class, 'index'])->name('pesanan');
     Route::get('/pesanan/delete/{id}', [OrderController::class, 'delete'])->name('pesanan.delete');
     Route::get('/pesanan/{order_id}', [OrderController::class, 'viewPesanan'])->name('lihat-pesanan');
+    Route::get('/pesanan/{order_id}/cetak', [OrderController::class, 'cetak'])
+        ->name('order.cetak');
 
     Route::post('/payment/{order_id}/bayar', [PaymentController::class, 'bayar'])->name('pesanan.bayar');
     Route::post('/payment/{order_id}/lunas', [PaymentController::class, 'markAsLunas'])->name('payment.success');
@@ -51,6 +57,7 @@ Route::middleware('guestuser')->group(function () {
         return view('Auth.register');
     });
 });
+
 
 Route::get('/blog', function () {
     return view('page.blog');

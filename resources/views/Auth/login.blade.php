@@ -46,16 +46,42 @@
                 <label class="block mb-1 text-sm font-medium text-gray-200">Email</label> <input type="email"
                     name="email"
                     class="w-full border border-gray-600 rounded-lg p-2 bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-green-400 transition"
-                    placeholder="Email Account">
+                    placeholder="Email Account" required>
 
             </div>
-            <div> <label class="block mb-1 text-sm font-medium text-gray-200">Password</label> <input type="password"
-                    name="password"
-                    class="w-full border border-gray-600 rounded-lg p-2 bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-green-400 transition"
-                    placeholder="Password">
-            </div> <button id="submitBtn" type="submit"
+            <div>
+                <label class="block mb-1 text-sm font-medium text-gray-200">Password</label>
+
+                <div class="relative items-center justify-center">
+                    <input type="password" id="passwordField" name="password" required
+                        class="w-full border border-gray-600 rounded-lg p-2 pr-10 bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-green-400 transition">
+
+                    <!-- ICON MATA -->
+                    <button type="button" id="togglePassword"
+                        class="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-200">
+
+                        <!-- Mata terbuka -->
+                        <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M2.25 12c0 0 3.75-7.5 9.75-7.5s9.75 7.5 9.75 7.5-3.75 7.5-9.75 7.5S2.25 12 2.25 12z" />
+                            <circle cx="12" cy="12" r="3" />
+                        </svg>
+
+                        <!-- Mata tertutup -->
+                        <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6 hidden">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3 3l18 18M9.88 9.88A3 3 0 0114.12 14.12M6.28 6.28C4.47 7.64 3 9.94 3 12c0 0 3.75 7.5 9.75 7.5 1.61 0 3.11-.33 4.46-.92M17.72 17.72c1.81-1.36 3.28-3.66 3.28-5.72 0 0-3.75-7.5-9.75-7.5-1.61 0-3.11.33-4.46.92" />
+                        </svg>
+
+                    </button>
+                </div>
+            </div>
+
+            <button id="submitBtn" type="submit"
                 class="w-full bg-green-800 text-white py-2 rounded-lg hover:bg-green-700 transition duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed">
-                Login </button> <span id="loading" class="hidden text-sm text-gray-400">Sedang memeriksa...</span>
+                Login </button>
         </form>
         <div class="mt-6 text-center text-sm text-gray-400"> Belum punya akun? <a href="/register"
                 class="text-blue-500 font-semibold hover:underline"> Daftar </a> </div>
@@ -69,6 +95,21 @@
     </div>
 
 </body>
+<script>
+    const passwordField = document.getElementById("passwordField");
+    const togglePassword = document.getElementById("togglePassword");
+    const eyeOpen = document.getElementById("eyeOpen");
+    const eyeClosed = document.getElementById("eyeClosed");
+
+    togglePassword.addEventListener("click", () => {
+        const isHidden = passwordField.type === "password";
+
+        passwordField.type = isHidden ? "text" : "password";
+
+        eyeOpen.classList.toggle("hidden");
+        eyeClosed.classList.toggle("hidden");
+    });
+</script>
 
 <script>
     const loginForm = document.getElementById("loginForm");

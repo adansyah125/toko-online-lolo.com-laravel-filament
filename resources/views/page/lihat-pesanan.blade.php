@@ -47,12 +47,17 @@
                     <div class="p-4 border-bottom bg-light">
                         <h5 class="fw-semibold text-secondary mb-3">Informasi Pengiriman</h5>
 
-                        <p class="small text-dark"><strong>Nama:</strong> {{ $order->nama_penerima }}</p>
+                        <p class="small text-dark"><strong>Nama Penerima:</strong> {{ $order->nama_penerima }}</p>
+                        <p class="small text-dark"><strong>Telepon:</strong> {{ $order->no_telp }}</p>
+
                         <p class="small text-dark"><strong>Alamat:</strong>
                             {{ $order->alamat }}
                         </p>
-                        <p class="small text-dark"><strong>Kurir:</strong> {{ $order->ekspedisi }}</p>
                         <p class="small text-dark"><strong>Status:</strong> {{ $order->status }}</p>
+                        <p class="small text-dark"><strong>Pengiriman:</strong>
+                            @php $pay = $order->payment->first(); @endphp
+                            {{ $pay->order_status }}
+                        </p>
                     </div>
 
                     {{-- RINGKASAN PEMBAYARAN --}}
@@ -78,6 +83,10 @@
                     {{-- FOOTER --}}
                     @if ($order->status == 'paid')
                         <div class="p-3 bg-light text-end">
+                            <a href="{{ route('order.cetak', $order->order_id) }}"
+                                class="btn btn-danger btn-sm px-4 py-2 shadow-sm rounded-3" target="_blank">
+                                Cetak PDF
+                            </a>
                             <a href="{{ route('pesanan') }}" class="btn btn-dark btn-sm px-4 py-2 shadow-sm rounded-3">
                                 kembali
                             </a>

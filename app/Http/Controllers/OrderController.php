@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Regency;
+use App\Models\Village;
 use App\Models\Activity;
+use App\Models\District;
+use App\Models\Province;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 
 class OrderController extends Controller
 {
@@ -29,6 +34,8 @@ class OrderController extends Controller
     }
     public function order()
     {
+        $provinces = Province::all();
+        $regencies = Regency::all();
         $cart = Cart::where('user_id', auth()->id())
             ->with('product')
             ->get();
@@ -41,7 +48,7 @@ class OrderController extends Controller
         $orderid = 'ORD-' . date('Ymd') . '-' . strtoupper(Str::random(5));
 
 
-        return view('page.order', compact('cart', 'total', 'orderid'));
+        return view('page.order', compact('cart', 'total', 'orderid', 'provinces', 'regencies'));
     }
 
 
@@ -66,9 +73,15 @@ class OrderController extends Controller
             }
         }
 
+
+
         // Proses setiap item di cart
         foreach ($cartItems as $item) {
             $product = Product::find($item->product_id);
+            $provinceName = Province::where('id', $request->province)->value('name');
+            $regencyName  = Regency::where('id', $request->regency)->value('name');
+            $districtName = District::where('id', $request->district)->value('name');
+            $villagename = Village::where('id', $request->village)->value('name');
 
             Order::create([
                 'user_id'       => Auth::id(),
@@ -79,8 +92,12 @@ class OrderController extends Controller
                 'total_harga'   => $item->qty * $product->harga,
                 'nama_penerima' => $request->nama_penerima,
                 'no_telp'       => $request->telepon,
-                'alamat'        => $request->alamat . ', ' . $request->kota . ', ' . $request->kode_pos,
-                'ekspedisi'     => $request->ekspedisi,
+                'alamat'        => $request->alamat . ', '
+                    . $provinceName
+                    . $regencyName . ', '
+                    . $districtName . ', '
+                    . $villagename . ', '
+                    . $request->kode_pos,
                 'status'        => 'pending',
             ]);
 
@@ -122,5 +139,60 @@ class OrderController extends Controller
         $order->delete();
 
         return redirect('pesanan')->with('success', "Pesanan dengan kode <b>" + $order->order_id + "</b> Berhasil Dibatalkan");
+    }
+
+
+    public function getRegencie(Request $request)
+    {
+        $id_province = $request->id_province;
+
+        $regencies = Regency::where('province_id', $id_province)->get();
+
+        $option = "<option>Pilih Kab/Kota</option>";
+        foreach ($regencies as $regencie) {
+            $option .= "<option value='$regencie->id'>$regencie->name</option>";
+        }
+
+        echo $option;
+    }
+
+    public function getDistrict(Request $request)
+    {
+        $id_regencie = $request->id_regencie;
+
+        $districts = District::where('regency_id', $id_regencie)->get();
+
+        $option = "<option>Pilih Kecamatan</option>";
+        foreach ($districts as $district) {
+            $option .= "<option value='$district->id'>$district->name</option>";
+        }
+
+        echo $option;
+    }
+
+
+    public function getVillage(Request $request)
+    {
+        $id_district = $request->id_district;
+
+        $villages = Village::where('district_id', $id_district)->get();
+
+        $option = "<option>Pilih Kelurahan/Desa</option>";
+        foreach ($villages as $village) {
+            $option .= "<option value='$village->id'>$village->name</option>";
+        }
+
+        echo $option;
+    }
+
+
+    public function cetak($order_id)
+    {
+        $order = Order::with('product', 'payment')->where('order_id', $order_id)->firstOrFail();
+
+        $pdf = Pdf::loadView('pdf.invoice', compact('order'))
+            ->setPaper('A4', 'portrait');
+
+        return $pdf->stream('invoice-' . $order_id . '.pdf');
     }
 }

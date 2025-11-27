@@ -81,7 +81,39 @@ class PaymentResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
-            ->headerActions([])
+            ->headerActions([
+                Tables\Actions\Action::make('cetak_laporan')
+                    ->label('Cetak Laporan')
+                    ->icon('heroicon-o-printer')
+                    ->form([
+                        Forms\Components\DatePicker::make('start_date')->label('Dari tanggal'),
+                        Forms\Components\DatePicker::make('end_date')->label('Sampai tanggal'),
+                    ])
+                    ->action(function (array $data) {
+                        $query = Payment::query();
+
+                        if ($data['start_date']) {
+                            $query->whereDate('created_at', '>=', $data['start_date']);
+                        }
+
+                        if ($data['end_date']) {
+                            $query->whereDate('created_at', '<=', $data['end_date']);
+                        }
+
+                        $payments = $query->get();
+
+                        // BUAT PDF
+                        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.payment-report', [
+                            'payments' => $payments,
+                            'start'    => $data['start_date'],
+                            'end'      => $data['end_date'],
+                        ]);
+
+                        return response()->streamDownload(function () use ($pdf) {
+                            echo $pdf->output();
+                        }, 'laporan-transaksi.pdf');
+                    }),
+            ])
             ->bulkActions([]);
     }
 
@@ -91,6 +123,7 @@ class PaymentResource extends Resource
             //
         ];
     }
+
 
     public static function getPages(): array
     {

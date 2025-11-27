@@ -53,15 +53,39 @@
                     </div>
 
                     <div class="col-12">
-                        <label class="form-label">Alamat Lengkap</label>
-                        <textarea name="alamat" id="alamat" rows="3" class="form-control" required></textarea>
-                        <small class="text-danger" id="error_alamat"></small>
+                        <label class="form-label">Provinsi</label>
+                        <select name="province" id="province" class="form-select" required>
+                            <option disabled selected>-- Pilih provinsi --</option>
+                            @foreach ($provinces as $province)
+                                <option value="{{ $province->id }}">{{ $province->name }}</option>
+                            @endforeach
+                            </option>
+                        </select>
+                        <small class="text-danger" id="error_province"></small>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Kab/Kota</label>
+                        <select name="regencie" id="regencie" class="form-select" required>
+                            {{-- @foreach ($regencies as $regencie)
+                                <option value="{{ $regencie->id }}">{{ $regencie->name }}</option>
+                            @endforeach --}}
+                        </select>
+                        <small class="text-danger" id="error_regencie"></small>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Kecamatan</label>
+                        <select name="district" id="district" class="form-select" required>
+
+                        </select>
+                        <small class="text-danger" id="error_district"></small>
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label">Kota/Kabupaten</label>
-                        <input type="text" name="kota" id="kota" class="form-control" required>
-                        <small class="text-danger" id="error_kota"></small>
+                        <label class="form-label">desa/kelurahan</label>
+                        <select name="village" id="village" class="form-select" required>
+
+                        </select>
+                        <small class="text-danger" id="error_village"></small>
                     </div>
 
                     <div class="col-md-6">
@@ -70,19 +94,11 @@
                             oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,5)" required>
                         <small class="text-danger" id="error_kodepos"></small>
                     </div>
-
-                    <div class="mt-3">
-                        <label class="form-label">Pilih Ekspedisi</label>
-                        <select name="ekspedisi" id="ekspedisi" class="form-select" required>
-                            <option value="">-- Pilih Ekspedisi --</option>
-                            <option value="JNE">JNE - Reguler</option>
-                            <option value="JNT">J&T - EZ</option>
-                            <option value="SiCepat">SiCepat - BEST</option>
-                            <option value="AnterAja">AnterAja - Reguler</option>
-                        </select>
-                        <small class="text-danger" id="error_ekspedisi"></small>
+                    <div class="col-12">
+                        <label class="form-label">Jl, Gang / Patokan</label>
+                        <textarea name="alamat" id="alamat" rows="3" class="form-control" required></textarea>
+                        <small class="text-danger" id="error_alamat"></small>
                     </div>
-
                     {{-- <div class="mb-3">
                         <label class="form-label fw-semibold">Kode Pesanan</label>
                         <input type="text" name="order_id" value="{{ $orderid }}" class="form-control"
@@ -264,6 +280,66 @@
 
             submitBtn.disabled = !valid;
         }
+    </script>
+    {{-- get data wilayah --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#province').on('change', function() {
+                let id_province = $(this).val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('get.regencie') }}",
+                    data: {
+                        id_province: id_province
+                    },
+                    cahce: 'false',
+
+                    success: function(response) {
+                        $('#regencie').html(response);
+                        $('#district').html('');
+                        $('#village').html('');
+
+                    }
+                })
+            })
+
+            $('#regencie').on('change', function() {
+                let id_regencie = $(this).val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('get.district') }}",
+                    data: {
+                        id_regencie: id_regencie
+                    },
+                    cahce: 'false',
+
+                    success: function(response) {
+                        $('#district').html(response);
+                        $('#village').html('');
+                    }
+                })
+            })
+
+            $('#district').on('change', function() {
+                let id_district = $(this).val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('get.village') }}",
+                    data: {
+                        id_district: id_district
+                    },
+                    cahce: 'false',
+
+                    success: function(response) {
+                        $('#village').html(response);
+                    }
+                })
+            })
+        });
     </script>
 
 

@@ -17,7 +17,6 @@
                                         <th>Nama Produk</th>
                                         <th class="text-nowrap">Total Harga</th>
                                         <th class="text-nowrap">Jumlah</th>
-                                        <th class="text-nowrap">Kurir</th>
                                         <th>Status</th>
                                         <th>Pengiriman</th>
                                         <th>Aksi</th>
@@ -37,27 +36,27 @@
 
                                             <td class="text-muted py-3">{{ $order->qty }}</td>
 
-                                            <td class="text-muted py-3">{{ $order->ekspedisi }}</td>
 
                                             <td class="py-3">
                                                 @if ($order->status == 'pending')
                                                     <span
-                                                        class="badge rounded-pill bg-warning text-dark px-3 py-2">Pending</span>
+                                                        class="badge rounded-pill text-warning text-dark px-3 py-2">Pending</span>
                                                 @elseif($order->status == 'paid' || $order->status == 'berhasil')
-                                                    <span class="badge rounded-pill bg-success px-3 py-2">Berhasil</span>
+                                                    <span class="badge rounded-pill text-success px-3 py-2">Berhasil</span>
                                                 @elseif($order->status == 'failed' || $order->status == 'dibatalkan')
-                                                    <span class="badge rounded-pill bg-danger px-3 py-2">Dibatalkan</span>
+                                                    <span class="badge rounded-pill text-danger px-3 py-2">Dibatalkan</span>
                                                 @endif
                                             </td>
                                             <td>
                                                 @if ($order->payment)
-                                                    @if ($order->payment->order_status == 'proses')
+                                                    @php $pay = $order->payment->first(); @endphp
+                                                    @if ($pay->order_status == 'proses')
                                                         <span class="badge rounded-pill bg-warning text-dark px-3 py-2">
                                                             Diproses</span>
-                                                    @elseif($order->payment->order_status == 'kirim')
+                                                    @elseif($pay->order_status == 'kirim')
                                                         <span class="badge rounded-pill bg-info text-dark px-3 py-2">Sedang
                                                             Dikirim</span>
-                                                    @elseif($order->payment->order_status == 'selesai')
+                                                    @elseif($pay->order_status == 'selesai')
                                                         <span class="badge rounded-pill bg-success px-3 py-2">Selesai</span>
                                                     @else
                                                         <span class="badge rounded-pill bg-secondary px-3 py-2">-</span>
@@ -66,6 +65,7 @@
                                                     <span class="text-muted">-</span>
                                                 @endif
                                             </td>
+                                            {{-- {{ dd($order->payment) }} --}}
                                             <td class="py-3">
                                                 @if ($order->status == 'pending')
                                                     <a href="{{ route('lihat-pesanan', $order->order_id) }}"
@@ -146,8 +146,6 @@
             });
         </script>
     @endif
-
-
 @endsection
 <script>
     function confirmCancel(orderId, url) {

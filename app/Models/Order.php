@@ -20,7 +20,6 @@ class Order extends Model
         'nama_penerima',
         'no_telp',
         'alamat',
-        'ekspedisi',
         'status',
     ];
 
@@ -36,6 +35,6 @@ class Order extends Model
 
     public function payment()
     {
-        return $this->hasOne(Payment::class, 'id', 'id');
+        return $this->hasMany(Payment::class, 'jasa_id');
     }
 }

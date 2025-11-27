@@ -50,9 +50,10 @@
                 <!-- NO TELEPON -->
                 <div class="mb-3" data-aos="fade-up" data-aos-delay="350">
                     <label class="form-label fw-semibold">No. Telepon</label>
-                    <input type="text" id="no_telp" name="no_telp" value="{{ Auth::user()->no_telp ?? '' }}"
-                        class="form-control">
-                    <small id="telpError" class="text-danger d-none"></small>
+                    <input type="text" name="no_telp" id="telepon" class="form-control"
+                        value="{{ Auth::user()->no_telp ?? '' }}"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,13)" required>
+                    <small class="text-danger" id="error_telepon"></small>
                 </div>
 
                 <!-- PASSWORD -->
@@ -92,4 +93,26 @@
             });
         </script>
     @endif
+    <script>
+        const telepon = document.getElementById("telepon");
+        const errorTelepon = document.getElementById("error_telepon");
+        telepon.addEventListener("input", validateTelepon);
+
+        function validateTelepon() {
+            const value = telepon.value.trim();
+            const angkaOnly = /^[0-9]+$/;
+
+            if (!angkaOnly.test(value)) {
+                errorTelepon.innerText = "Nomor telepon hanya boleh angka";
+                telepon.classList.add("is-invalid");
+            } else if (value.length !== 13 && value.length !== 12) {
+                errorTelepon.innerText = "Nomor telepon harus 12 atau 13 digit";
+                telepon.classList.add("is-invalid");
+            } else {
+                errorTelepon.innerText = "";
+                telepon.classList.remove("is-invalid");
+            }
+            checkAllValid();
+        }
+    </script>
 @endsection
