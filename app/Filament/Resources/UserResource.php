@@ -62,11 +62,20 @@ class UserResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->alignCenter()
                     ->searchable(),
-                TextColumn::make('email'),
-                TextColumn::make('role'),
-                TextColumn::make('activity'),
+                TextColumn::make('email')
+                    ->alignCenter(),
+                TextColumn::make('alamat')
+                    ->alignCenter()
+                    ->placeholder('-'),
+                TextColumn::make('no_telp')
+                    ->alignCenter()
+                    ->placeholder('-'),
+                TextColumn::make('role')
+                    ->alignCenter(),
                 TextColumn::make('created_at')
+                    ->alignCenter()
                     ->label('dibuat')
                     ->formatStateUsing(fn(string $state): string => Carbon::make($state)->format('d F Y')),
 

@@ -21,7 +21,7 @@ class ActivityResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-chart-bar';
 
-    protected static ?string $navigationLabel = 'Aktivitas Pengguna';
+    protected static ?string $navigationLabel = 'Log Activity';
 
     public static function getPluralLabel(): string
     {
@@ -39,7 +39,7 @@ class ActivityResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->defaultSort('created_at', 'asc')
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('user.name')
                     ->searchable()

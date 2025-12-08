@@ -34,6 +34,8 @@
                             <form action="{{ route('cart.add', $item->id) }}" method="POST"
                                 class="position-absolute bottom-0 start-50 translate-middle-x" style="z-index: 2;">
                                 @csrf
+                                <input type="hidden" name="product_id" value="{{ $item->id }}">
+                                <input type="hidden" name="qty" id="inputQty" value="1">
                                 <button type="submit" class="border-0 bg-transparent p-0 m-0">
                                     <span class="icon-cross">
                                         <img src="{{ asset('images/cross.svg') }}" class="img-fluid" alt="Add to Cart">

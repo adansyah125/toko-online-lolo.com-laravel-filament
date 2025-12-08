@@ -43,20 +43,27 @@ class OrderResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('nama_produk')
+                    ->alignCenter()
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('qty'),
+                TextColumn::make('qty')
+                    ->alignCenter(),
                 TextColumn::make('total_harga')
+                    ->alignCenter()
                     ->money('IDR', locale: 'ID'),
                 TextColumn::make('nama_penerima')
+                    ->alignCenter()
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('no_telp')
+                    ->alignCenter()
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('payment.order_status')
+                    ->alignCenter()
                     ->searchable()
                     ->sortable()
                     ->badge()
@@ -67,6 +74,7 @@ class OrderResource extends Resource
                     ])
                     ->label('Status Pesanan'),
                 TextColumn::make('status')
+                    ->alignCenter()
                     ->searchable()
                     ->sortable(),
             ])
@@ -74,9 +82,9 @@ class OrderResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\ViewAction::make(),
+                // Tables\Actions\EditAction::make(),
+                // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -96,8 +104,8 @@ class OrderResource extends Resource
     {
         return [
             'index' => Pages\ListOrders::route('/'),
-            'create' => Pages\CreateOrder::route('/create'),
-            'edit' => Pages\EditOrder::route('/{record}/edit'),
+            // 'create' => Pages\CreateOrder::route('/create'),
+            // 'edit' => Pages\EditOrder::route('/{record}/edit'),
         ];
     }
 }

@@ -15,7 +15,12 @@
                             Kami adalah toko online yang menyediakan beragam produk berkualitas dengan harga terjangkau...
                         </p>
                         <p>
-                            <a href="{{ route('shop') }}" class="btn btn-secondary me-2">Beli Sekarang</a>
+                            @if (!Auth::check())
+                                <a href="{{ route('login') }}" class="btn btn-secondary me-2">Beli Sekarang</a>
+                            @else
+                                {{-- <a href="{{ route('dashboard') }}" class="btn btn-secondary me-2">Dashboard</a> --}}
+                                <a href="{{ route('shop') }}" class="btn btn-secondary me-2">Beli Sekarang</a>
+                            @endif
                         </p>
                     </div>
                 </div>

@@ -52,24 +52,36 @@ class PaymentResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('user.name')
+                    ->alignCenter()
                     ->searchable()
                     ->sortable()
                     ->label('Pembeli'),
                 TextColumn::make('order_id')
+                    ->alignCenter()
                     ->searchable()
                     ->sortable()
                     ->label('Kode. Pesanan'),
                 TextColumn::make('payment_status')
+                    ->alignCenter()
                     ->searchable()
                     ->sortable()
                     ->label('Status Pembayaran'),
                 TextColumn::make('order_status')
+                    ->alignCenter()
                     ->searchable()
                     ->sortable()
+                    ->badge()
+                    ->colors([
+                        'warning' => 'proses',
+                        'info' => 'kirim',
+                        'success' => 'selesai',
+                    ])
                     ->label('Status Pesanan'),
                 TextColumn::make('price')
+                    ->alignCenter()
                     ->label('Total Harga')
                     ->money('IDR', locale: 'ID'),
 
@@ -78,9 +90,12 @@ class PaymentResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label('Update Status Pesanan')
+                    ->icon('heroicon-o-arrow-path'),
             ])
+
             ->headerActions([
                 Tables\Actions\Action::make('cetak_laporan')
                     ->label('Cetak Laporan')
@@ -129,7 +144,7 @@ class PaymentResource extends Resource
     {
         return [
             'index' => Pages\ListPayments::route('/'),
-            'create' => Pages\CreatePayment::route('/create'),
+            // 'create' => Pages\CreatePayment::route('/create'),
             'edit' => Pages\EditPayment::route('/{record}/edit'),
         ];
     }

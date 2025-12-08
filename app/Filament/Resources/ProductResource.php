@@ -83,18 +83,32 @@ class ProductResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
-                ImageColumn::make('image1'),
-                ImageColumn::make('image2'),
-                ImageColumn::make('image3'),
+                ImageColumn::make('image1')
+                    ->label('Gambar')
+                    ->circular()
+                    ->alignCenter(),
+                ImageColumn::make('image2')
+                    ->label('Gambar')
+                    ->circular()
+                    ->alignCenter(),
+                ImageColumn::make('image3')
+                    ->label('Gambar')
+                    ->circular()
+                    ->alignCenter(),
                 TextColumn::make('nama')
+                    ->alignCenter()
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('category.nama')
+                    ->alignCenter()
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('stok'),
+                TextColumn::make('stok')
+                    ->alignCenter(),
                 TextColumn::make('harga')
+                    ->alignCenter()
                     ->money('IDR', locale: 'ID'),
             ])
             ->filters([

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
@@ -68,4 +69,8 @@ Route::middleware('guestuser')->group(function () {
 
     Route::post('/reset-password', [AuthController::class, 'reset'])
         ->name('password.update');
+
+    Route::get('/email/verify', function () {
+        return view('Auth.verify');
+    })->middleware('auth')->name('verification.notice');
 });

@@ -11,7 +11,7 @@
                     <div class="col-12">
                         <div class="table-responsive">
                             <div class="mb-3 text-end">
-                                <input type="text" id="searchOrderInput" class="form-control w-25 d-inline-block"
+                                <input type="text" id="searchOrderInput" class="form-control w-50 d-inline-block"
                                     placeholder="Cari kode pesanan..." autocomplete="off">
                             </div>
 
