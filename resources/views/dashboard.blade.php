@@ -10,7 +10,7 @@
             <div class="row justify-content-between">
                 <div class="col-lg-5" data-aos="fade-right">
                     <div class="intro-excerpt">
-                        <h1><span class="d-block">PK1.2 Shop</span> <span class="d-block">Marketplace</span></h1>
+                        <h1><span class="d-block">TAV Shop</span> <span class="d-block">Marketplace</span></h1>
                         <p class="mb-4">
                             Kami adalah toko online yang menyediakan beragam produk berkualitas dengan harga terjangkau...
                         </p>
@@ -201,7 +201,7 @@
             <div class="row g-5 mb-5">
                 <div class="col-lg-4">
                     <div class="mb-4 footer-logo-wrap">
-                        <a href="#" class="footer-logo">PK1.2<span>.</span></a>
+                        <a href="#" class="footer-logo">TAV<span>.</span></a>
                     </div>
                     <p class="mb-4">Kunjungi Media Sosial...</p>
                     <ul class="list-unstyled custom-social">

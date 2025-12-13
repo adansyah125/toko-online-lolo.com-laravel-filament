@@ -17,7 +17,7 @@
     <link href="{{ asset('css/tiny-slider.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
-    <title>PK1.2 - @yield('title')</title>
+    <title>TAV - @yield('title')</title>
     <style>
         body {
             font-family: 'glyphicons-halflings', sans-serif;
@@ -34,7 +34,8 @@
     <!-- Navigation -->
     <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
         <div class="container">
-            <a class="navbar-brand" href="/">PK1.2</a>
+            <a class="navbar-brand" href="/"><img src="{{ asset('logo.png') }}" alt=""
+                    style="width: 100px; height:100px"></a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
                 aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">

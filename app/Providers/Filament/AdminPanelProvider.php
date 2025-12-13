@@ -30,7 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->favicon(asset('favicon.png'))
-            ->brandName('PK1.2')
+            ->brandName('TAV')
             ->login(CustomLogin::class)
             ->profile()
             ->colors([
