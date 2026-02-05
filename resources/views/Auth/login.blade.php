@@ -31,34 +31,35 @@
     </style>
 </head>
 <div id="toast"
-    class="hidden fixed top-5 right-5 z-50 px-4 py-3 rounded-lg shadow-lg text-white text-sm transition-all duration-300">
+    class="hidden fixed top-5 right-5 z-50 px-4 py-3 rounded-lg shadow-lg text-black text-sm transition-all duration-300">
 </div>
 
-<body class="bg-gray-900 sm:px-0 px-4 flex items-center justify-center min-h-screen">
+<body class="bg-zinc-400 sm:px-0 px-4 flex items-center justify-center min-h-screen">
 
-    <div class="bg-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-md fade-in">
-        <h2 class="text-2xl font-bold text-center text-gray-300 mb-1">PK 1.2</h2>
-        <p class="text-center text-gray-300 mb-6">Silahkan untuk Login terlebih dahulu</p> {{-- Session error --}}
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md fade-in">
+        {{-- <h2 class="text-2xl font-bold text-center text-gray-300 mb-1">PK 1.2</h2> --}}
+        <img src="{{ asset('logo.png') }}" alt="" class="m-auto" style="width: 80px; height:60px">
+        <p class="text-center text-black mb-6">Silahkan untuk Login terlebih dahulu</p> {{-- Session error --}}
         @if (session('error'))
-            <div class="bg-red-600 text-white p-3 rounded mb-3"> {{ session('error') }} </div>
+            <div class="bg-red-600 text-black p-3 rounded mb-3"> {{ session('error') }} </div>
         @endif
         <form id="loginForm" action="{{ route('user.login.post') }}" method="POST" class="space-y-4"> @csrf <div>
-                <label class="block mb-1 text-sm font-medium text-gray-200">Email</label> <input type="email"
+                <label class="block mb-1 text-sm font-medium text-black">Email</label> <input type="email"
                     name="email"
-                    class="w-full border border-gray-600 rounded-lg p-2 bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-green-400 transition"
+                    class="w-full border  rounded-lg p-2  text-black placeholder-gray-400 focus:ring-2 focus:ring-green-400 transition"
                     placeholder="Email Account" required>
 
             </div>
             <div>
-                <label class="block mb-1 text-sm font-medium text-gray-200">Password</label>
+                <label class="block mb-1 text-sm font-medium text-black">Password</label>
 
                 <div class="relative items-center justify-center">
                     <input type="password" id="passwordField" name="password" required
-                        class="w-full border border-gray-600 rounded-lg p-2 pr-10 bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-green-400 transition">
+                        class="w-full border  rounded-lg p-2 pr-10  text-black placeholder-gray-400 focus:ring-2 focus:ring-green-400 transition">
 
                     <!-- ICON MATA -->
                     <button type="button" id="togglePassword"
-                        class="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-200">
+                        class="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-black">
 
                         <!-- Mata terbuka -->
                         <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -96,7 +97,7 @@
             <div class="flex-grow h-px bg-gray-600"></div> <span class="px-3 text-gray-400 text-sm">atau</span>
             <div class="flex-grow h-px bg-gray-600"></div>
         </div> {{-- Login Google --}} <a href="{{ route('google.redirect') }}"
-            class="w-full flex items-center justify-center gap-2 border border-gray-600 py-2 rounded-lg hover:bg-gray-700 transition duration-300 text-white">
+            class="w-full flex items-center justify-center gap-2 border border-black py-2 rounded-lg hover:bg-gray-300 transition duration-300 text-black">
             <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5"> <span>Login dengan
                 Google</span> </a>
     </div>
@@ -198,9 +199,9 @@
         toast.textContent = message;
 
         if (type === "error") {
-            toast.className = "fixed top-5 right-5 z-50 px-4 py-3 rounded-lg shadow-lg text-white text-sm bg-red-600";
+            toast.className = "fixed top-5 right-5 z-50 px-4 py-3 rounded-lg shadow-lg text-black text-sm bg-red-600";
         } else {
-            toast.className = "fixed top-5 right-5 z-50 px-4 py-3 rounded-lg shadow-lg text-white text-sm bg-green-600";
+            toast.className = "fixed top-5 right-5 z-50 px-4 py-3 rounded-lg shadow-lg text-black text-sm bg-green-600";
         }
 
         toast.style.opacity = "1";

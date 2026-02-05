@@ -12,12 +12,12 @@
     class="hidden fixed top-5 right-5 z-50 px-4 py-3 rounded-lg shadow-lg text-white text-sm transition-all duration-300">
 </div>
 
-<body class="bg-gray-900 flex justify-center items-center min-h-screen px-4">
+<body class="bg-zinc-400 flex justify-center items-center min-h-screen px-4">
 
-    <div class="bg-gray-800 p-6 sm:p-8 rounded-xl w-full max-w-md text-white shadow-xl">
+    <div class="bg-white p-6 sm:p-8 rounded-xl w-full max-w-md text-white shadow-xl">
 
-        <h2 class="text-2xl font-bold mb-3 text-center">Lupa Password</h2>
-        <p class="mb-5 text-gray-300 text-center text-sm sm:text-base">
+        {{-- <h2 class="text-2xl font-bold mb-3 text-center text-black">Lupa Password</h2> --}}
+        <p class="mb-5 text-gray-400 text-center text-sm sm:text-base">
             Masukkan email Anda, kami akan mengirimkan link reset password.
         </p>
 
@@ -30,9 +30,9 @@
         <form method="POST" action="{{ route('password.email') }}">
             @csrf
 
-            <label class="block mb-1 text-sm font-medium">Email</label>
+            <label class="block mb-1 text-sm font-medium text-black">Email</label>
             <input type="email" name="email"
-                class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-green-500 transition text-sm sm:text-base"
+                class="w-full p-2 rounded border  border-gray-400 text-black focus:ring-2 focus:ring-green-500 transition text-sm sm:text-base"
                 placeholder="Masukkan email Anda" required>
 
             <button

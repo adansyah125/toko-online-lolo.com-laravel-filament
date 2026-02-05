@@ -29,7 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->favicon(asset('favicon.png'))
+            ->favicon(asset('logo.png'))
             ->brandName('TAV')
             ->login(CustomLogin::class)
             ->profile()
@@ -57,7 +57,5 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
                 'admin'
             ]);
-        // ->authorize(fn() => auth()->user()?->role === 'admin');
-        // ->authorize(fn() => Auth::user()?->role === 'admin');
     }
 }

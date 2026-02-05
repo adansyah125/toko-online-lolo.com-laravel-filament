@@ -87,6 +87,7 @@ class ProductResource extends Resource
             ->columns([
                 ImageColumn::make('image1')
                     ->label('Gambar')
+                    ->disk('public')
                     ->circular()
                     ->alignCenter(),
                 ImageColumn::make('image2')

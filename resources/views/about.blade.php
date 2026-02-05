@@ -4,7 +4,7 @@
     {{-- HERO --}}
     <section class="container text-center py-5" data-aos="fade-up">
         <h1 class="fw-bold display-5 text-dark mb-3">
-            PK1.2
+            TAV
         </h1>
         <p class="text-muted fs-5 mx-auto" style="max-width: 700px;">
             Kami adalah toko online yang menyediakan beragam produk berkualitas dengan harga terjangkau,

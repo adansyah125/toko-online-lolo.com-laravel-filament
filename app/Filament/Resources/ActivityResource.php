@@ -48,7 +48,7 @@ class ActivityResource extends Resource
                 TextColumn::make('deskripsi'),
                 TextColumn::make('created_at')
                     ->label('Tanggal')
-                    ->formatStateUsing(fn(string $state): string => Carbon::make($state)->format('d F Y H:i:s'))
+                    ->formatStateUsing(fn(string $state): string => Carbon::make($state)->timezone('Asia/Jakarta')->format('d F Y H:i:s'))
                     ->sortable(),
             ])
             ->filters([

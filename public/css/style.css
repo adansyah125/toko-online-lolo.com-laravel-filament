@@ -31,7 +31,8 @@ a {
     font-weight: 600; }
 
 .custom-navbar {
-  background: #3b5d50 !important;
+  /* background: #3b5d50 !important; */
+  background: grey !important;
   padding-top: 20px;
   padding-bottom: 20px; }
   .custom-navbar .navbar-brand {
@@ -51,7 +52,7 @@ a {
       margin-right: 15px; } }
   .custom-navbar .custom-navbar-nav li a {
     font-weight: 500;
-    color: #ffffff !important;
+    color: #d6d6d6 !important;
     opacity: .5;
     -webkit-transition: .3s all ease;
     -o-transition: .3s all ease;
@@ -64,7 +65,7 @@ a {
         bottom: 0;
         left: 8px;
         right: 8px;
-        background: #f9bf29;
+        background: green;
         height: 5px;
         opacity: 1;
         visibility: visible;
@@ -96,8 +97,9 @@ a {
         margin-right: 20px; }
 
 .hero {
-  /* height: 100vh; */
-  background: #3b5d50;
+  height: 100vh;
+  /* background: #3b5d50; */
+  background: grey;
   padding: calc(4rem - 30px) 0 0rem 0; }
   @media (min-width: 768px) {
     .hero {
@@ -113,13 +115,13 @@ a {
         max-width: 450px; } }
   .hero h1 {
     font-weight: 700;
-    color: #ffffff;
+    color: black;
     margin-bottom: 30px; }
     @media (min-width: 1400px) {
       .hero h1 {
         font-size: 54px; } }
   .hero p {
-    color: rgba(255, 255, 255, 0.5);
+    color: black;
     margin-botom: 30px; }
   .hero .hero-img-wrap {
     position: relative; }
@@ -181,12 +183,12 @@ a {
       background: #314d43;
       border-color: #314d43; }
   .btn.btn-secondary {
-    color: #2f2f2f;
-    background: #f9bf29;
-    border-color: #f9bf29; }
+    color: white;
+    background: maroon;
+    border-color: none; }
     .btn.btn-secondary:hover {
-      background: #f8b810;
-      border-color: #f8b810; }
+      background: red  ;
+      border-color: red  ; }
   .btn.btn-white-outline {
     background: transparent;
     border-width: 2px;
@@ -317,7 +319,7 @@ a {
   .we-help-section .imgs-grid {
     display: -ms-grid;
     display: grid;
-    -ms-grid-columns: (1fr)[27];
+    -ms-grid-columns: (1fr) [27];
     grid-template-columns: repeat(27, 1fr);
     position: relative; }
     .we-help-section .imgs-grid:before {

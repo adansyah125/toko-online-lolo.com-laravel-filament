@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="keywords" content="bootstrap, bootstrap4">
-    <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('logo.png') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
     <!-- Stylesheets -->
@@ -35,7 +35,7 @@
     <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
         <div class="container">
             <a class="navbar-brand" href="/"><img src="{{ asset('logo.png') }}" alt=""
-                    style="width: 100px; height:100px"></a>
+                    style="width: 70px; height:50px"></a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
                 aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,7 +48,7 @@
                         <a class="nav-link" href="{{ route('dashboard') }}">Beranda</a>
                     </li>
                     <li class="nav-item @if (request()->routeIs('shop')) active @endif">
-                        <a class="nav-link" href="{{ route('shop') }}">Shop</a>
+                        <a class="nav-link" href="{{ route('shop') }}">Produk</a>
                     </li>
                     <li class="nav-item @if (request()->routeIs('pesanan')) active @endif ">
                         <a class="nav-link" href="{{ route('pesanan') }}">Pesanan Saya</a>
@@ -57,7 +57,7 @@
                         <a class="nav-link" href="{{ route('about') }}">Tentang Kami</a>
                     </li>
                     <li class="nav-item @if (request()->routeIs('contact')) active @endif  ">
-                        <a class="nav-link" href="{{ route('contact') }}">Contact</a>
+                        <a class="nav-link" href="{{ route('contact') }}">Kontak</a>
                     </li>
                 </ul>
 
